@@ -1,0 +1,78 @@
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+
+export type ShopCategory =
+  | 'All'
+  | 'Tops'
+  | 'Outerwear'
+  | 'Objects'
+  | 'Accessories'
+
+export type CartItem = {
+  slug: string
+  size: string
+  quantity: number
+}
+
+const shopSlice = createSlice({
+  name: 'shop',
+  initialState: {
+    category: 'All' as ShopCategory,
+    cartItems: [] as CartItem[],
+  },
+  reducers: {
+    setCategory: (state, action: PayloadAction<ShopCategory>) => {
+      state.category = action.payload
+    },
+    addToCart: (
+      state,
+      action: PayloadAction<{ slug: string; size: string }>,
+    ) => {
+      const existingItem = state.cartItems.find(
+        (item) =>
+          item.slug === action.payload.slug && item.size === action.payload.size,
+      )
+
+      if (existingItem) {
+        existingItem.quantity += 1
+      } else {
+        state.cartItems.push({ ...action.payload, quantity: 1 })
+      }
+    },
+    incrementQuantity: (
+      state,
+      action: PayloadAction<{ slug: string; size: string }>,
+    ) => {
+      const item = state.cartItems.find(
+        (cartItem) =>
+          cartItem.slug === action.payload.slug &&
+          cartItem.size === action.payload.size,
+      )
+      if (item) item.quantity += 1
+    },
+    decrementQuantity: (
+      state,
+      action: PayloadAction<{ slug: string; size: string }>,
+    ) => {
+      const itemIndex = state.cartItems.findIndex(
+        (cartItem) =>
+          cartItem.slug === action.payload.slug &&
+          cartItem.size === action.payload.size,
+      )
+      if (itemIndex < 0) return
+
+      if (state.cartItems[itemIndex].quantity === 1) {
+        state.cartItems.splice(itemIndex, 1)
+      } else {
+        state.cartItems[itemIndex].quantity -= 1
+      }
+    },
+  },
+})
+
+export const {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+  setCategory,
+} = shopSlice.actions
+export default shopSlice.reducer
