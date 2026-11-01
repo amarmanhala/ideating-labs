@@ -1,7 +1,7 @@
 import { Image } from '@openai/apps-sdk-ui/components/Image'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { SiteFooter } from '../components/SiteFooter'
 import { SiteHeader } from '../components/SiteHeader'
@@ -22,6 +22,7 @@ const categories: ShopCategory[] = [
 export function ShopPage() {
   const activeCategory = useAppSelector((state) => state.shop.category)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const categoryFromUrl =
     categories.find(
@@ -44,8 +45,33 @@ export function ShopPage() {
         <SiteHeader />
 
         <main className="flex-1 pb-20 pt-16 font-mono sm:pt-24">
-          <div className="grid grid-cols-[112px_minmax(0,1fr)] gap-5 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-8 lg:grid-cols-[180px_minmax(0,1fr)] lg:gap-12">
-            <aside>
+          <div className="mb-6 flex justify-end sm:hidden">
+            <label>
+              <span className="sr-only">Product category</span>
+              <select
+                value={activeCategory}
+                onChange={(event) => {
+                  const category = event.target.value as ShopCategory
+                  dispatch(setCategory(category))
+                  navigate(
+                    category === 'All'
+                      ? '/shop'
+                      : `/shop?category=${category.toLowerCase()}`,
+                  )
+                }}
+                className="min-h-11 max-w-full rounded-md border border-default bg-surface px-3 py-2 font-mono text-sm text-primary"
+              >
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category === 'All' ? 'All categories' : category}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div className="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-8 lg:grid-cols-[180px_minmax(0,1fr)] lg:gap-12">
+            <aside className="hidden sm:block">
               <nav
                 aria-label="Product categories"
                 className="flex flex-col items-start gap-2 text-sm uppercase"
@@ -74,10 +100,10 @@ export function ShopPage() {
 
             <section
               aria-label="Products"
-              className="grid grid-cols-1 gap-x-4 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-6"
+              className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3 lg:gap-x-6"
             >
               {visibleProducts.map((product) => (
-                <article key={product.name}>
+                <article key={product.name} className="min-w-0">
                   <Link
                     to={`/shop/${product.slug}`}
                     aria-label={`View ${product.name}`}
@@ -95,7 +121,7 @@ export function ShopPage() {
                     <TextLink
                       to={`/shop/${product.slug}`}
                       underline={false}
-                      className="font-mono"
+                      className="min-w-0 max-w-full wrap-anywhere font-mono"
                     >
                       {product.name}
                     </TextLink>
