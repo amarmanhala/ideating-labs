@@ -13,18 +13,18 @@ import { TermsPage } from './pages/TermsPage'
 
 function HomePage() {
   return (
-    <div className="min-h-dvh bg-surface text-primary lg:h-dvh lg:overflow-hidden">
-      <div className="mx-auto flex min-h-dvh w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:h-full lg:min-h-0 lg:px-12">
+    <div className="h-dvh overflow-hidden bg-surface text-primary">
+      <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
         <SiteHeader />
 
-        <main className="grid min-h-0 flex-1 grid-rows-[auto_auto] pt-6 sm:pt-10 lg:grid-rows-[auto_minmax(0,1fr)] lg:pt-12">
+        <main className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] pt-6 sm:pt-10 lg:pt-12">
           <section
             id="studio"
             aria-labelledby="intro-heading"
-            className="max-w-3xl"
+            className="max-w-2xl"
           >
             <h1 id="intro-heading" className="sr-only">Ideating Labs</h1>
-            <p className="text-2xl leading-relaxed sm:text-3xl">
+            <p className="text-lg leading-relaxed sm:text-xl lg:text-2xl">
               Creatively designed streetwear inspired by the thoughts we hide,
               the emotions we feel, and the conversations we need to have.
             </p>
@@ -32,8 +32,8 @@ function HomePage() {
               to="/shop"
               color="primary"
               variant="solid"
-              size="2xl"
-              className="mt-5 min-h-14 px-6 text-base"
+              size="md"
+              className="mt-2 sm:mt-3"
             >
               SHOP NOW
               <ArrowRightSm />
@@ -45,22 +45,10 @@ function HomePage() {
             aria-label="Be Present collection"
             className="mt-5 min-h-0 sm:mt-8 lg:mt-10"
           >
-            <div className="grid sm:hidden">
-              <Image
-                src="/images/ideating-labs-collection.png"
-                alt="A hoodie, T-shirt, and socks with encouraging messages"
-                className="aspect-[4/3] w-full object-cover object-left"
-              />
-              <Image
-                src="/images/ideating-labs-collection.png"
-                alt="A quarter-zip, cap, and tote bag with encouraging messages"
-                className="aspect-[4/3] w-full object-cover object-right"
-              />
-            </div>
             <Image
               src="/images/ideating-labs-collection.png"
               alt="A minimalist apparel collection featuring a hoodie, T-shirt, socks, quarter-zip, cap, and tote bag with encouraging messages"
-              className="hidden w-full object-contain object-center sm:block lg:h-full lg:min-h-20"
+              className="h-full min-h-20 w-full object-contain object-center"
             />
           </section>
         </main>
