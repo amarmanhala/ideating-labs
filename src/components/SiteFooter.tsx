@@ -1,5 +1,6 @@
 import { Globe } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
+import { CookiePreferences } from './CookiePreferences'
 
 export function SiteFooter() {
   return (
@@ -10,8 +11,9 @@ export function SiteFooter() {
         aria-label="Legal"
         className="flex flex-wrap items-center gap-x-6 gap-y-3"
       >
-        <TextLink to="/#privacy" underline={false} className="text-xs">Privacy</TextLink>
-        <TextLink to="/#terms" underline={false} className="text-xs">Terms</TextLink>
+        <CookiePreferences />
+        <TextLink to="/privacy" underline={false} className="text-xs">Privacy</TextLink>
+        <TextLink to="/terms" underline={false} className="text-xs">Terms</TextLink>
         <TextLink to="/#accessibility" underline={false} className="text-xs">Accessibility</TextLink>
       </nav>
 

@@ -5,8 +5,11 @@ import { Route, Routes } from 'react-router'
 import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
 import { CartPage } from './pages/CartPage'
+import { FaqPage } from './pages/FaqPage'
+import { PrivacyPage } from './pages/PrivacyPage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
 import { ShopPage } from './pages/ShopPage'
+import { TermsPage } from './pages/TermsPage'
 
 function HomePage() {
   return (
@@ -65,6 +68,9 @@ function App() {
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/:slug" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/faq" element={<FaqPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/terms" element={<TermsPage />} />
     </Routes>
   )
 }

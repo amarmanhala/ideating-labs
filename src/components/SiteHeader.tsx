@@ -20,7 +20,7 @@ export function SiteHeader() {
         <TextLink to="/shop" underline={false}>Shop</TextLink>
         <TextLink to="/#archive" underline={false}>Archive</TextLink>
         <TextLink to="/#about" underline={false}>About</TextLink>
-        <TextLink to="/#faq" underline={false}>FAQ</TextLink>
+        <TextLink to="/faq" underline={false}>FAQ</TextLink>
         <TextLink to="/cart" underline={false}>Cart ({cartCount})</TextLink>
       </nav>
     </header>
