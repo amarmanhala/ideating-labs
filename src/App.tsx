@@ -25,9 +25,8 @@ function HomePage() {
           >
             <h1 id="intro-heading" className="sr-only">Ideating Labs</h1>
             <p className="text-lg leading-relaxed sm:text-xl lg:text-2xl">
-              Clothes for minds that do too much. Ideating Labs turns grounding
-              thoughts into everyday pieces—gentle reminders to breathe, be
-              here, and let this moment be enough.
+              Creatively designed streetwear inspired by the thoughts we hide,
+              the emotions we feel, and the conversations we need to have.
             </p>
             <ButtonLink
               to="/shop"
