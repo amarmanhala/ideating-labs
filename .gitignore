@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.cloudflare/
+.dev.vars*
+.env*
 
 # Editor directories and files
 .vscode/*

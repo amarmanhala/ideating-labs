@@ -9,27 +9,30 @@ import {
 } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { products } from '../data/products'
+import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
+import { useGetProductsQuery } from '../features/catalog/catalogApi'
 import {
   decrementQuantity,
   incrementQuantity,
 } from '../features/shop/shopSlice'
-
-function currency(value: number) {
-  return `$${value.toFixed(2)}`
-}
-
-function productPrice(price: string) {
-  return Number(price.replace(/[^0-9.]/g, ''))
-}
+import { formatPrice } from '../utils/currency'
 
 export function CartPage() {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.shop.cartItems)
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetProductsQuery(undefined, { skip: cartItems.length === 0 })
+  const productsBySlug = new Map(
+    products.map((product) => [product.slug, product]),
+  )
   const subtotal = cartItems.reduce((total, item) => {
-    const product = products.find((candidate) => candidate.slug === item.slug)
+    const product = productsBySlug.get(item.slug)
     return product
-      ? total + productPrice(product.price) * item.quantity
+      ? total + product.priceMinor * item.quantity
       : total
   }, 0)
 
@@ -66,6 +69,14 @@ export function CartPage() {
               </EmptyMessage.ActionRow>
             </EmptyMessage>
           </div>
+        ) : isLoading ? (
+          <div className="flex flex-1 items-center justify-center">
+            <CatalogLoading label="Loading your cart…" />
+          </div>
+        ) : isError ? (
+          <div className="flex flex-1 items-center justify-center">
+            <CatalogError onRetry={refetch} />
+          </div>
         ) : (
           <>
             <section
@@ -74,9 +85,7 @@ export function CartPage() {
             >
               <div className="space-y-10">
                 {cartItems.map((item) => {
-                  const product = products.find(
-                    (candidate) => candidate.slug === item.slug,
-                  )
+                  const product = productsBySlug.get(item.slug)
                   if (!product) return null
 
                   const itemKey = `${item.slug}-${item.size}`
@@ -93,7 +102,7 @@ export function CartPage() {
                         aria-label={`View ${product.name}`}
                       >
                         <Image
-                          src={product.image}
+                          src={product.imageUrl}
                           alt={product.name.toLowerCase()}
                           className="aspect-square w-full object-contain"
                         />
@@ -143,7 +152,10 @@ export function CartPage() {
                       </div>
 
                       <p className="col-start-2 text-base text-secondary sm:col-auto sm:text-xl">
-                        {currency(productPrice(product.price) * item.quantity)}
+                        {formatPrice(
+                          product.priceMinor * item.quantity,
+                          product.currency,
+                        )}
                       </p>
                     </article>
                   )
@@ -154,7 +166,7 @@ export function CartPage() {
             <footer className="pt-8">
               <div className="flex items-center justify-between border-b border-default pb-6 text-lg uppercase sm:text-xl">
                 <span>Subtotal</span>
-                <span>{currency(subtotal)}</span>
+                <span>{formatPrice(subtotal, 'CAD')}</span>
               </div>
               <Button
                 color="primary"

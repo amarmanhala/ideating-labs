@@ -1,11 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import type { ProductCategory } from '../../types/catalog'
 
-export type ShopCategory =
-  | 'All'
-  | 'Tops'
-  | 'Outerwear'
-  | 'Objects'
-  | 'Accessories'
+export type ShopCategory = 'All' | ProductCategory
 
 export type CartItem = {
   slug: string

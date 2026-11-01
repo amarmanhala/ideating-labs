@@ -11,8 +11,11 @@ import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedContro
 import { useRef, useState, type CSSProperties } from 'react'
 import { Navigate, useParams } from 'react-router'
 import { useAppDispatch } from '../app/hooks'
-import { products } from '../data/products'
+import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
+import { useGetProductQuery } from '../features/catalog/catalogApi'
 import { addToCart } from '../features/shop/shopSlice'
+import type { Product } from '../types/catalog'
+import { formatPrice } from '../utils/currency'
 
 const disclosureButtonStyle = {
   '--button-background-color': 'transparent',
@@ -22,7 +25,36 @@ const disclosureButtonStyle = {
 
 export function ProductDetailPage() {
   const { slug } = useParams()
-  const product = products.find((item) => item.slug === slug)
+  const {
+    data: product,
+    isLoading,
+    error,
+    refetch,
+  } = useGetProductQuery(slug ?? '', { skip: !slug })
+
+  if (!slug) {
+    return <Navigate to="/shop" replace />
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-surface text-primary">
+        <CatalogLoading label="Loading product…" />
+      </div>
+    )
+  }
+
+  if (error && 'status' in error && error.status === 404) {
+    return <Navigate to="/shop" replace />
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-surface px-5 text-primary">
+        <CatalogError onRetry={refetch} />
+      </div>
+    )
+  }
 
   if (!product) {
     return <Navigate to="/shop" replace />
@@ -31,7 +63,7 @@ export function ProductDetailPage() {
   return <ProductDetail product={product} />
 }
 
-function ProductDetail({ product }: { product: (typeof products)[number] }) {
+function ProductDetail({ product }: { product: Product }) {
   const dispatch = useAppDispatch()
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
   const [added, setAdded] = useState(false)
@@ -66,7 +98,7 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
                 className="flex h-[min(100vw,65dvh)] min-w-0 snap-center items-center justify-center overflow-hidden lg:h-dvh"
               >
                 <Image
-                  src={product.image}
+                  src={product.imageUrl}
                   alt={`${product.name.toLowerCase()} ${index + 1} of ${galleryTreatments.length}`}
                   className={`h-full max-h-full w-full object-contain ${treatment}`}
                 />
@@ -122,7 +154,9 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
             <h1 id="product-title" className="heading-md wrap-anywhere font-mono uppercase sm:heading-lg">
               {product.name}
             </h1>
-            <p className="mt-2 font-mono text-lg text-secondary">{product.price}</p>
+            <p className="mt-2 font-mono text-lg text-secondary">
+              {formatPrice(product.priceMinor, product.currency)}
+            </p>
           </div>
 
           <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed lg:mt-16 lg:text-xl">

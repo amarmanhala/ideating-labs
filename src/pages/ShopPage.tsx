@@ -3,13 +3,15 @@ import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
 import { SiteFooter } from '../components/SiteFooter'
 import { SiteHeader } from '../components/SiteHeader'
-import { products } from '../data/products'
+import { useGetProductsQuery } from '../features/catalog/catalogApi'
 import {
   setCategory,
   type ShopCategory,
 } from '../features/shop/shopSlice'
+import { formatPrice } from '../utils/currency'
 
 const categories: ShopCategory[] = [
   'All',
@@ -34,9 +36,13 @@ export function ShopPage() {
     dispatch(setCategory(categoryFromUrl))
   }, [categoryFromUrl, dispatch])
 
-  const visibleProducts = products.filter(
-    (product) =>
-      activeCategory === 'All' || product.category === activeCategory,
+  const {
+    data: products = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetProductsQuery(
+    categoryFromUrl === 'All' ? undefined : categoryFromUrl,
   )
 
   return (
@@ -102,7 +108,22 @@ export function ShopPage() {
               aria-label="Products"
               className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3 lg:gap-x-6"
             >
-              {visibleProducts.map((product) => (
+              {isLoading && (
+                <div className="col-span-full">
+                  <CatalogLoading label="Loading products…" />
+                </div>
+              )}
+              {isError && (
+                <div className="col-span-full">
+                  <CatalogError onRetry={refetch} />
+                </div>
+              )}
+              {!isLoading && !isError && products.length === 0 && (
+                <p className="col-span-full py-12 text-center text-sm text-secondary">
+                  No products are available in this category yet.
+                </p>
+              )}
+              {products.map((product) => (
                 <article key={product.name} className="min-w-0">
                   <Link
                     to={`/shop/${product.slug}`}
@@ -111,7 +132,7 @@ export function ShopPage() {
                   >
                     <div className="aspect-square overflow-hidden">
                       <Image
-                        src={product.image}
+                        src={product.imageUrl}
                         alt={product.name.toLowerCase()}
                         className="h-full w-full object-contain"
                       />
@@ -125,7 +146,9 @@ export function ShopPage() {
                     >
                       {product.name}
                     </TextLink>
-                    <span className="font-mono text-secondary">{product.price}</span>
+                    <span className="font-mono text-secondary">
+                      {formatPrice(product.priceMinor, product.currency)}
+                    </span>
                   </div>
                 </article>
               ))}
