@@ -1,8 +1,6 @@
 import { Button } from '@openai/apps-sdk-ui/components/Button'
 import { Minus, Plus } from '@openai/apps-sdk-ui/components/Icon'
 import { useState, type CSSProperties } from 'react'
-import { SiteFooter } from '../components/SiteFooter'
-import { SiteHeader } from '../components/SiteHeader'
 
 type FaqItem = {
   question: string
@@ -182,11 +180,7 @@ export function FaqPage() {
   const [openItem, setOpenItem] = useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-surface font-sans text-primary">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <SiteHeader />
-
-        <main className="flex-1 pb-24 pt-16 sm:pt-24">
+        <main className="flex-1 pb-24 pt-16 font-sans sm:pt-24">
           <h1 className="sr-only">Frequently asked questions</h1>
 
           <div className="space-y-16 sm:space-y-20">
@@ -253,9 +247,5 @@ export function FaqPage() {
             ))}
           </div>
         </main>
-
-        <SiteFooter />
-      </div>
-    </div>
   )
 }

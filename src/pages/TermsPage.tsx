@@ -1,32 +1,26 @@
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
-import { SiteFooter } from '../components/SiteFooter'
-import { SiteHeader } from '../components/SiteHeader'
 
 const sections = [
-  ['about', 'About these terms'],
-  ['eligibility', 'Eligibility'],
-  ['products', 'Products and availability'],
-  ['orders', 'Orders and payment'],
-  ['shipping', 'Shipping and delivery'],
-  ['returns', 'Returns and refunds'],
-  ['uploads', 'Your uploads'],
-  ['wellness', 'Wellness disclaimer'],
-  ['acceptable-use', 'Acceptable use'],
-  ['intellectual-property', 'Intellectual property'],
-  ['third-parties', 'Third-party services'],
-  ['disclaimers', 'Disclaimers'],
-  ['liability', 'Limitation of liability'],
-  ['changes', 'Changes to these terms'],
-  ['general', 'General terms'],
+  ['terms-about', 'About these terms'],
+  ['terms-eligibility', 'Eligibility'],
+  ['terms-products', 'Products and availability'],
+  ['terms-orders', 'Orders and payment'],
+  ['terms-shipping', 'Shipping and delivery'],
+  ['terms-returns', 'Returns and refunds'],
+  ['terms-uploads', 'Your uploads'],
+  ['terms-wellness', 'Wellness disclaimer'],
+  ['terms-acceptable-use', 'Acceptable use'],
+  ['terms-intellectual-property', 'Intellectual property'],
+  ['terms-third-parties', 'Third-party services'],
+  ['terms-disclaimers', 'Disclaimers'],
+  ['terms-liability', 'Limitation of liability'],
+  ['terms-changes', 'Changes to these terms'],
+  ['terms-general', 'General terms'],
 ] as const
 
 export function TermsPage() {
   return (
-    <div className="min-h-screen bg-surface text-primary">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <SiteHeader />
-
-        <main className="flex-1 pb-24 pt-16 sm:pt-24">
+        <section id="terms-of-use" className="scroll-mt-8 pb-24 pt-16 sm:pt-24">
           <div className="border-b border-subtle pb-12 sm:pb-16">
             <p className="text-sm text-secondary">Published: October 28, 2026</p>
             <h1 className="heading-3xl mt-5 max-w-5xl sm:heading-5xl">
@@ -50,7 +44,7 @@ export function TermsPage() {
             </aside>
 
             <article className="space-y-14 text-base leading-relaxed sm:text-lg">
-              <section id="about" className="scroll-mt-8">
+              <section id="terms-about" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">About these terms</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -69,7 +63,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="eligibility" className="scroll-mt-8">
+              <section id="terms-eligibility" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Eligibility</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -85,7 +79,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="products" className="scroll-mt-8">
+              <section id="terms-products" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Products and availability</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -102,7 +96,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="orders" className="scroll-mt-8">
+              <section id="terms-orders" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Orders and payment</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -123,7 +117,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="shipping" className="scroll-mt-8">
+              <section id="terms-shipping" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Shipping and delivery</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -142,7 +136,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="returns" className="scroll-mt-8">
+              <section id="terms-returns" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Returns and refunds</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -160,7 +154,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="uploads" className="scroll-mt-8">
+              <section id="terms-uploads" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Your uploads</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -182,7 +176,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="wellness" className="scroll-mt-8">
+              <section id="terms-wellness" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Wellness disclaimer</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -201,7 +195,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="acceptable-use" className="scroll-mt-8">
+              <section id="terms-acceptable-use" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Acceptable use</h2>
                 <div className="mt-6 space-y-5">
                   <p>You may not use the Services to:</p>
@@ -216,7 +210,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="intellectual-property" className="scroll-mt-8">
+              <section id="terms-intellectual-property" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Intellectual property</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -235,7 +229,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="third-parties" className="scroll-mt-8">
+              <section id="terms-third-parties" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Third-party services</h2>
                 <p className="mt-6">
                   We may rely on third parties for payments, delivery,
@@ -247,7 +241,7 @@ export function TermsPage() {
                 </p>
               </section>
 
-              <section id="disclaimers" className="scroll-mt-8">
+              <section id="terms-disclaimers" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Disclaimers</h2>
                 <p className="mt-6">
                   To the maximum extent permitted by law, the Services are
@@ -258,7 +252,7 @@ export function TermsPage() {
                 </p>
               </section>
 
-              <section id="liability" className="scroll-mt-8">
+              <section id="terms-liability" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Limitation of liability</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -276,7 +270,7 @@ export function TermsPage() {
                 </div>
               </section>
 
-              <section id="changes" className="scroll-mt-8">
+              <section id="terms-changes" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Changes to these terms</h2>
                 <p className="mt-6">
                   We may update these Terms to reflect changes in our products,
@@ -288,7 +282,7 @@ export function TermsPage() {
                 </p>
               </section>
 
-              <section id="general" className="scroll-mt-8">
+              <section id="terms-general" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">General terms</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -310,10 +304,6 @@ export function TermsPage() {
               </section>
             </article>
           </div>
-        </main>
-
-        <SiteFooter />
-      </div>
-    </div>
+        </section>
   )
 }

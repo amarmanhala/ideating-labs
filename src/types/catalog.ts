@@ -29,6 +29,19 @@ export type ProductDetailResponse = {
   data: Product
 }
 
+export type CreateProductInput = {
+  slug: string
+  name: string
+  category: ProductCategory
+  priceMinor: number
+  currency: 'CAD'
+  imageUrl: string
+  description: string
+  materials: string
+  fit: string
+  sizes: string[]
+}
+
 export type ApiErrorResponse = {
   error: {
     code: string

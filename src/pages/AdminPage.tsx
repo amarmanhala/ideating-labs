@@ -7,6 +7,7 @@ import {
   Home,
   MenuSidebar,
   Order,
+  Plus,
   ProductTag,
   Search,
   SidebarCollapseLeft,
@@ -17,6 +18,8 @@ import {
 import { Image } from '@openai/apps-sdk-ui/components/Image'
 import { Input } from '@openai/apps-sdk-ui/components/Input'
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router'
+import { AdminProductForm } from '../components/AdminProductForm'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
 import { useGetProductsQuery } from '../features/catalog/catalogApi'
 import { formatPrice } from '../utils/currency'
@@ -41,9 +44,17 @@ const navigationItems = [
 ]
 
 export function AdminPage() {
-  const [activeSection, setActiveSection] = useState<AdminSection>('Home')
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [selectedSection, setSelectedSection] = useState<AdminSection>('Home')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const activeSection: AdminSection = location.pathname.startsWith(
+    '/admin/products',
+  )
+    ? 'Products'
+    : selectedSection
+  const isAddingProduct = location.pathname === '/admin/products/new'
   const {
     data: products = [],
     isLoading: productsLoading,
@@ -75,8 +86,13 @@ export function AdminPage() {
   ]
 
   const selectSection = (section: AdminSection) => {
-    setActiveSection(section)
+    setSelectedSection(section)
     setSidebarOpen(false)
+    if (section === 'Products') {
+      navigate('/admin/products')
+    } else if (location.pathname !== '/admin') {
+      navigate('/admin')
+    }
   }
 
   return (
@@ -237,6 +253,8 @@ export function AdminPage() {
                   </EmptyMessage>
                 </section>
               </div>
+            ) : activeSection === 'Products' && isAddingProduct ? (
+              <AdminProductForm onCancel={() => navigate('/admin/products')} />
             ) : activeSection === 'Products' ? (
               <section className="mt-10" aria-labelledby="products-heading">
                 <div className="flex items-center justify-between gap-4">
@@ -248,11 +266,23 @@ export function AdminPage() {
                       Products currently stored in the Cloudflare catalog.
                     </p>
                   </div>
-                  {!productsLoading && !productsError && (
-                    <Badge color="secondary" variant="soft" size="md">
-                      {products.length} {products.length === 1 ? 'product' : 'products'}
-                    </Badge>
-                  )}
+                  <div className="flex items-center gap-3">
+                    {!productsLoading && !productsError && (
+                      <Badge color="secondary" variant="soft" size="md">
+                        {products.length}{' '}
+                        {products.length === 1 ? 'product' : 'products'}
+                      </Badge>
+                    )}
+                    <Button
+                      type="button"
+                      color="primary"
+                      variant="solid"
+                      onClick={() => navigate('/admin/products/new')}
+                    >
+                      <Plus />
+                      Add product
+                    </Button>
+                  </div>
                 </div>
 
                 {productsLoading && <CatalogLoading label="Loading products…" />}

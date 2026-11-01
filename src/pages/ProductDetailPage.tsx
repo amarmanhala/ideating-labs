@@ -1,18 +1,19 @@
-import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button'
+import { Button } from '@openai/apps-sdk-ui/components/Button'
 import { Image } from '@openai/apps-sdk-ui/components/Image'
+import { Input } from '@openai/apps-sdk-ui/components/Input'
 import {
   ArrowLeft,
   ArrowRight,
-  CloseBold,
   Minus,
   Plus,
 } from '@openai/apps-sdk-ui/components/Icon'
 import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl'
 import { useRef, useState, type CSSProperties } from 'react'
-import { Navigate, useParams } from 'react-router'
-import { useAppDispatch } from '../app/hooks'
+import { Navigate, useNavigate, useParams } from 'react-router'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
 import { useGetProductQuery } from '../features/catalog/catalogApi'
+import { savePendingCartItem } from '../features/auth/pendingCart'
 import { addToCart } from '../features/shop/shopSlice'
 import type { Product } from '../types/catalog'
 import { formatPrice } from '../utils/currency'
@@ -38,9 +39,9 @@ export function ProductDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-dvh items-center justify-center bg-surface text-primary">
+      <main className="flex min-h-0 flex-1 items-center justify-center">
         <CatalogLoading label="Loading product…" />
-      </div>
+      </main>
     )
   }
 
@@ -50,9 +51,9 @@ export function ProductDetailPage() {
 
   if (error) {
     return (
-      <div className="flex h-dvh items-center justify-center bg-surface px-5 text-primary">
+      <main className="flex min-h-0 flex-1 items-center justify-center px-5">
         <CatalogError onRetry={refetch} />
-      </div>
+      </main>
     )
   }
 
@@ -65,8 +66,10 @@ export function ProductDetailPage() {
 
 function ProductDetail({ product }: { product: Product }) {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const authStatus = useAppSelector((state) => state.account.status)
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
-  const [added, setAdded] = useState(false)
+  const [quantity, setQuantity] = useState(1)
   const [activeImage, setActiveImage] = useState(0)
   const [openSection, setOpenSection] = useState<'materials' | 'fit' | null>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
@@ -78,11 +81,10 @@ function ProductDetail({ product }: { product: Product }) {
   ]
 
   return (
-    <div className="min-h-dvh bg-surface text-primary lg:h-dvh lg:overflow-hidden">
-      <main className="grid min-w-0 lg:h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)]">
+      <main className="grid min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-contain lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)]">
         <section
           aria-label={`${product.name} image gallery`}
-          className="relative min-w-0"
+          className="relative min-h-0 min-w-0"
         >
           <div
             ref={galleryRef}
@@ -90,12 +92,12 @@ function ProductDetail({ product }: { product: Product }) {
               const gallery = event.currentTarget
               setActiveImage(Math.round(gallery.scrollLeft / gallery.clientWidth))
             }}
-            className="grid snap-x snap-mandatory auto-cols-[100%] grid-flow-col overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:h-dvh lg:overflow-x-hidden lg:overflow-y-auto"
+            className="grid snap-x snap-mandatory auto-cols-[100%] grid-flow-col overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:h-full lg:overflow-x-hidden lg:overflow-y-auto"
           >
             {galleryTreatments.map((treatment, index) => (
               <figure
                 key={treatment}
-                className="flex h-[min(100vw,65dvh)] min-w-0 snap-center items-center justify-center overflow-hidden lg:h-dvh"
+                className="flex h-[min(100vw,65dvh)] min-w-0 snap-center items-center justify-center overflow-hidden lg:h-full"
               >
                 <Image
                   src={product.imageUrl}
@@ -137,20 +139,9 @@ function ProductDetail({ product }: { product: Product }) {
 
         <section
           aria-labelledby="product-title"
-          className="relative flex min-w-0 flex-col px-5 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-dvh lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
+          className="relative flex min-h-0 min-w-0 flex-col px-5 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
         >
-          <ButtonLink
-            to="/shop"
-            color="secondary"
-            variant="ghost"
-            size="lg"
-            aria-label="Close product details"
-            className="fixed right-4 top-4 z-20 bg-surface sm:right-6 sm:top-6 lg:absolute"
-          >
-            <CloseBold />
-          </ButtonLink>
-
-          <div className="lg:pr-14">
+          <div>
             <h1 id="product-title" className="heading-md wrap-anywhere font-mono uppercase sm:heading-lg">
               {product.name}
             </h1>
@@ -180,17 +171,55 @@ function ProductDetail({ product }: { product: Product }) {
             </SegmentedControl>
           </div>
 
+          <label className="mt-6 flex w-28 flex-col gap-2 font-sans text-sm">
+            Quantity
+            <Input
+              type="number"
+              min="1"
+              max="99"
+              step="1"
+              value={quantity}
+              size="lg"
+              className="font-mono"
+              onChange={(event) => {
+                const nextQuantity = Number(event.target.value)
+                setQuantity(
+                  Number.isFinite(nextQuantity)
+                    ? Math.min(99, Math.max(1, Math.floor(nextQuantity)))
+                    : 1,
+                )
+              }}
+            />
+          </label>
+
           <Button
             type="button"
             color="primary"
             size="lg"
+            loading={authStatus === 'initializing'}
             className="mt-8 w-full lg:w-auto lg:self-start"
             onClick={() => {
-              dispatch(addToCart({ slug: product.slug, size: selectedSize }))
-              setAdded(true)
+              if (authStatus !== 'authenticated') {
+                savePendingCartItem({
+                  slug: product.slug,
+                  size: selectedSize,
+                  quantity,
+                })
+                navigate('/login?next=%2Fcart')
+                return
+              }
+
+              dispatch(
+                addToCart({
+                  slug: product.slug,
+                  size: selectedSize,
+                  quantity,
+                }),
+              )
+              navigate('/cart')
             }}
           >
-            {added ? `Added · ${selectedSize}` : 'Add to cart'}
+            Add to cart
           </Button>
 
           <div className="mt-auto pt-10 font-sans">
@@ -266,6 +295,5 @@ function ProductDetail({ product }: { product: Product }) {
           </div>
         </section>
       </main>
-    </div>
   )
 }

@@ -21,17 +21,18 @@ const shopSlice = createSlice({
     },
     addToCart: (
       state,
-      action: PayloadAction<{ slug: string; size: string }>,
+      action: PayloadAction<{ slug: string; size: string; quantity: number }>,
     ) => {
+      const quantity = Math.max(1, Math.floor(action.payload.quantity))
       const existingItem = state.cartItems.find(
         (item) =>
           item.slug === action.payload.slug && item.size === action.payload.size,
       )
 
       if (existingItem) {
-        existingItem.quantity += 1
+        existingItem.quantity += quantity
       } else {
-        state.cartItems.push({ ...action.payload, quantity: 1 })
+        state.cartItems.push({ ...action.payload, quantity })
       }
     },
     incrementQuantity: (
@@ -62,11 +63,15 @@ const shopSlice = createSlice({
         state.cartItems[itemIndex].quantity -= 1
       }
     },
+    clearCart: (state) => {
+      state.cartItems = []
+    },
   },
 })
 
 export const {
   addToCart,
+  clearCart,
   decrementQuantity,
   incrementQuantity,
   setCategory,

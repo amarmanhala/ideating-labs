@@ -5,9 +5,11 @@ import { ShoppingBag } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { logOut } from '../features/account/accountSlice'
+import { setAnonymous } from '../features/account/accountSlice'
+import { clearCart } from '../features/shop/shopSlice'
+import { supabase } from '../lib/supabase'
 
-export function SiteHeader({ showAccountLinks = false }: { showAccountLinks?: boolean }) {
+export function SiteHeader() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const account = useAppSelector((state) => state.account)
@@ -28,7 +30,7 @@ export function SiteHeader({ showAccountLinks = false }: { showAccountLinks?: bo
         <TextLink to="/shop" underline={false}>Shop</TextLink>
         <TextLink to="/about" underline={false}>About</TextLink>
         <TextLink to="/faq" underline={false}>FAQ</TextLink>
-        {showAccountLinks && !account.isSignedIn && (
+        {account.status === 'anonymous' && (
           <div className="flex items-center gap-2">
             <ButtonLink to="/login" color="secondary" variant="outline" size="sm">
               Login
@@ -52,7 +54,7 @@ export function SiteHeader({ showAccountLinks = false }: { showAccountLinks?: bo
           <span>({cartCount})</span>
         </TextLink>
 
-        {account.isSignedIn && (
+        {account.status === 'authenticated' && (
           <Menu modal>
             <Menu.Trigger>
               <Button
@@ -72,7 +74,9 @@ export function SiteHeader({ showAccountLinks = false }: { showAccountLinks?: bo
               <Menu.Separator />
               <Menu.Item
                 onSelect={() => {
-                  dispatch(logOut())
+                  void supabase?.auth.signOut()
+                  dispatch(setAnonymous())
+                  dispatch(clearCart())
                   navigate('/')
                 }}
               >

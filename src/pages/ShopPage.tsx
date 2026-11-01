@@ -4,8 +4,6 @@ import { useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
-import { SiteFooter } from '../components/SiteFooter'
-import { SiteHeader } from '../components/SiteHeader'
 import { useGetProductsQuery } from '../features/catalog/catalogApi'
 import {
   setCategory,
@@ -46,10 +44,6 @@ export function ShopPage() {
   )
 
   return (
-    <div className="min-h-screen bg-surface text-primary">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <SiteHeader />
-
         <main className="flex-1 pb-20 pt-16 sm:pt-24">
           <div className="mb-6 flex justify-end sm:hidden">
             <label>
@@ -155,9 +149,5 @@ export function ShopPage() {
             </section>
           </div>
         </main>
-
-        <SiteFooter />
-      </div>
-    </div>
   )
 }

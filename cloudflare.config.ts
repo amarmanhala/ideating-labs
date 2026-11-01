@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
         CATALOG_API_ORIGIN: bindings.text(
           mode === 'development' ? 'https://ideatinglabs.com' : '',
         ),
+        ADMIN_API_KEY: bindings.secret(),
       },
       observability: {
         enabled: true,

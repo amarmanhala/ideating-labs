@@ -2,10 +2,10 @@ import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button'
 import { EmptyMessage } from '@openai/apps-sdk-ui/components/EmptyMessage'
 import { Image } from '@openai/apps-sdk-ui/components/Image'
 import {
-  CloseBold,
   Minus,
   Plus,
   ShoppingBag,
+  Trash,
 } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -35,23 +35,13 @@ export function CartPage() {
       ? total + product.priceMinor * item.quantity
       : total
   }, 0)
+  const itemCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  )
 
   return (
-    <div className="h-dvh overflow-hidden bg-surface font-mono text-primary">
-      <main className="mx-auto flex h-full w-full max-w-[1200px] flex-col px-5 py-6 sm:px-10 sm:py-10 lg:px-14">
-        <header className="flex items-center justify-between">
-          <h1 className="heading-xl font-sans">Shopping cart</h1>
-          <ButtonLink
-            to="/shop"
-            color="secondary"
-            variant="ghost"
-            size="lg"
-            aria-label="Close cart"
-          >
-            <CloseBold />
-          </ButtonLink>
-        </header>
-
+    <main className="mx-auto flex min-h-0 w-full max-w-[1400px] flex-1 flex-col overflow-y-auto py-6 sm:py-10 lg:overflow-hidden">
         {cartItems.length === 0 ? (
           <div className="flex flex-1 items-center justify-center">
             <EmptyMessage fill="none">
@@ -78,12 +68,12 @@ export function CartPage() {
             <CatalogError onRetry={refetch} />
           </div>
         ) : (
-          <>
+          <div className="grid min-h-0 flex-1 gap-8 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
             <section
               aria-label="Cart items"
-              className="mt-12 flex-1 overflow-y-auto sm:mt-16"
+              className="min-h-0 lg:overflow-y-auto lg:pr-4"
             >
-              <div className="space-y-10">
+              <div className="divide-y divide-default border-y border-default">
                 {cartItems.map((item) => {
                   const product = productsBySlug.get(item.slug)
                   if (!product) return null
@@ -94,7 +84,7 @@ export function CartPage() {
                   return (
                     <article
                       key={itemKey}
-                      className="grid grid-cols-[88px_minmax(0,1fr)] gap-5 sm:grid-cols-[140px_minmax(0,1fr)_auto] sm:items-start sm:gap-8"
+                      className="grid grid-cols-[96px_minmax(0,1fr)] gap-5 py-6 sm:grid-cols-[150px_minmax(0,1fr)_auto] sm:items-start sm:gap-8 sm:py-8"
                     >
                       <TextLink
                         to={`/shop/${product.slug}`}
@@ -108,17 +98,20 @@ export function CartPage() {
                         />
                       </TextLink>
 
-                      <div className="flex flex-col items-start">
+                      <div className="flex min-w-0 flex-col items-start">
                         <TextLink
                           to={`/shop/${product.slug}`}
                           underline={false}
-                          className="text-base uppercase sm:text-xl"
+                          className="wrap-anywhere font-mono text-base uppercase sm:text-lg"
                         >
-                          {product.name} ({item.size})
+                          {product.name}
                         </TextLink>
+                        <p className="mt-2 text-sm text-secondary">
+                          {product.category} · Size {item.size}
+                        </p>
 
                         <div
-                          className="mt-5 inline-flex items-center border border-default"
+                          className="mt-5 inline-flex items-center rounded-lg border border-default"
                           aria-label={`Quantity for ${product.name}`}
                         >
                           <Button
@@ -128,12 +121,16 @@ export function CartPage() {
                             pill={false}
                             uniform
                             size="lg"
-                            aria-label={`Decrease ${product.name} quantity`}
+                            aria-label={
+                              item.quantity === 1
+                                ? `Remove ${product.name} from cart`
+                                : `Decrease ${product.name} quantity`
+                            }
                             onClick={() => dispatch(decrementQuantity(actionPayload))}
                           >
-                            <Minus />
+                            {item.quantity === 1 ? <Trash /> : <Minus />}
                           </Button>
-                          <span className="flex h-9 min-w-10 items-center justify-center border-x border-default px-3 text-base">
+                          <span className="flex h-9 min-w-10 items-center justify-center border-x border-default px-3 font-mono text-base">
                             {item.quantity}
                           </span>
                           <Button
@@ -151,7 +148,7 @@ export function CartPage() {
                         </div>
                       </div>
 
-                      <p className="col-start-2 text-base text-secondary sm:col-auto sm:text-xl">
+                      <p className="col-start-2 font-mono text-base sm:col-auto sm:text-lg">
                         {formatPrice(
                           product.priceMinor * item.quantity,
                           product.currency,
@@ -163,23 +160,27 @@ export function CartPage() {
               </div>
             </section>
 
-            <footer className="pt-8">
-              <div className="flex items-center justify-between border-b border-default pb-6 text-lg uppercase sm:text-xl">
-                <span>Subtotal</span>
-                <span>{formatPrice(subtotal, 'CAD')}</span>
+            <aside aria-label="Order summary" className="lg:self-start">
+              <div className="rounded-xl border border-default p-5 sm:p-6">
+                <h2 className="heading-md">Order summary</h2>
+                <div className="mt-6 flex items-start justify-between gap-4 text-base">
+                  <span>
+                    Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+                  </span>
+                  <span className="shrink-0 font-mono">
+                    {formatPrice(subtotal, 'CAD')}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-secondary">
+                  Shipping and taxes are calculated at checkout.
+                </p>
+                <Button color="primary" size="xl" block className="mt-6">
+                  Proceed to checkout
+                </Button>
               </div>
-              <Button
-                color="primary"
-                size="2xl"
-                block
-                className="mx-auto mt-8 max-w-2xl"
-              >
-                Checkout
-              </Button>
-            </footer>
-          </>
+            </aside>
+          </div>
         )}
-      </main>
-    </div>
+    </main>
   )
 }

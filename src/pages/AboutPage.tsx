@@ -1,14 +1,7 @@
 import { ButtonLink } from '@openai/apps-sdk-ui/components/Button'
 import { ArrowRightSm } from '@openai/apps-sdk-ui/components/Icon'
-import { SiteFooter } from '../components/SiteFooter'
-import { SiteHeader } from '../components/SiteHeader'
-
 export function AboutPage() {
   return (
-    <div className="min-h-screen bg-surface text-primary">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <SiteHeader />
-
         <main className="flex flex-1 items-center py-16 sm:py-24">
           <article className="mx-auto w-full max-w-5xl">
             <h1 className="heading-xl max-w-4xl sm:heading-3xl lg:heading-4xl">
@@ -64,9 +57,5 @@ export function AboutPage() {
             </div>
           </article>
         </main>
-
-        <SiteFooter />
-      </div>
-    </div>
   )
 }

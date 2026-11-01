@@ -1,31 +1,25 @@
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
-import { SiteFooter } from '../components/SiteFooter'
-import { SiteHeader } from '../components/SiteHeader'
 
 const sections = [
-  ['scope', 'About this policy'],
-  ['collection', 'Information we collect'],
-  ['use', 'How we use information'],
-  ['sharing', 'How we share information'],
-  ['payments', 'Payments'],
-  ['uploads', 'Files you upload'],
-  ['cookies', 'Cookies and analytics'],
-  ['retention', 'Data retention'],
-  ['choices', 'Your choices and rights'],
-  ['transfers', 'International processing'],
-  ['children', 'Children'],
-  ['security', 'Security'],
-  ['changes', 'Changes to this policy'],
-  ['contact', 'Contact us'],
+  ['privacy-scope', 'About this policy'],
+  ['privacy-collection', 'Information we collect'],
+  ['privacy-use', 'How we use information'],
+  ['privacy-sharing', 'How we share information'],
+  ['privacy-payments', 'Payments'],
+  ['privacy-uploads', 'Files you upload'],
+  ['privacy-cookies', 'Cookies and analytics'],
+  ['privacy-retention', 'Data retention'],
+  ['privacy-choices', 'Your choices and rights'],
+  ['privacy-transfers', 'International processing'],
+  ['privacy-children', 'Children'],
+  ['privacy-security', 'Security'],
+  ['privacy-changes', 'Changes to this policy'],
+  ['privacy-contact', 'Contact us'],
 ] as const
 
 export function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-surface text-primary">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <SiteHeader />
-
-        <main className="flex-1 pb-24 pt-16 sm:pt-24">
+        <section id="privacy-policy" className="scroll-mt-8 pb-24 pt-16 sm:pt-24">
           <div className="border-b border-subtle pb-12 sm:pb-16">
             <p className="text-sm text-secondary">Published: October 28, 2026</p>
             <h1 className="heading-3xl mt-5 max-w-5xl sm:heading-5xl">
@@ -49,7 +43,7 @@ export function PrivacyPage() {
             </aside>
 
             <article className="space-y-14 text-base leading-relaxed sm:text-lg">
-              <section id="scope" className="scroll-mt-8">
+              <section id="privacy-scope" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">About this policy</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -68,7 +62,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="collection" className="scroll-mt-8">
+              <section id="privacy-collection" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Information we collect</h2>
                 <div className="mt-6 space-y-5">
                   <p>We collect information in three main ways:</p>
@@ -98,7 +92,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="use" className="scroll-mt-8">
+              <section id="privacy-use" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">How we use information</h2>
                 <div className="mt-6 space-y-5">
                   <p>We use personal information to:</p>
@@ -120,7 +114,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="sharing" className="scroll-mt-8">
+              <section id="privacy-sharing" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">How we share information</h2>
                 <div className="mt-6 space-y-5">
                   <p>We may disclose personal information to:</p>
@@ -153,7 +147,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="payments" className="scroll-mt-8">
+              <section id="privacy-payments" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Payments</h2>
                 <p className="mt-6">
                   Payments are processed by third-party payment providers. We
@@ -165,7 +159,7 @@ export function PrivacyPage() {
                 </p>
               </section>
 
-              <section id="uploads" className="scroll-mt-8">
+              <section id="privacy-uploads" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Files you upload</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -184,7 +178,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="cookies" className="scroll-mt-8">
+              <section id="privacy-cookies" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Cookies and analytics</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -201,7 +195,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="retention" className="scroll-mt-8">
+              <section id="privacy-retention" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Data retention</h2>
                 <p className="mt-6">
                   We keep personal information only as long as reasonably
@@ -215,7 +209,7 @@ export function PrivacyPage() {
                 </p>
               </section>
 
-              <section id="choices" className="scroll-mt-8">
+              <section id="privacy-choices" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Your choices and rights</h2>
                 <div className="mt-6 space-y-5">
                   <p>
@@ -234,7 +228,7 @@ export function PrivacyPage() {
                 </div>
               </section>
 
-              <section id="transfers" className="scroll-mt-8">
+              <section id="privacy-transfers" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">International processing</h2>
                 <p className="mt-6">
                   Ideating Labs and its providers may process information in
@@ -244,7 +238,7 @@ export function PrivacyPage() {
                 </p>
               </section>
 
-              <section id="children" className="scroll-mt-8">
+              <section id="privacy-children" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Children</h2>
                 <p className="mt-6">
                   The Services are not directed to children under 13, and we do
@@ -256,7 +250,7 @@ export function PrivacyPage() {
                 </p>
               </section>
 
-              <section id="security" className="scroll-mt-8">
+              <section id="privacy-security" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Security</h2>
                 <p className="mt-6">
                   We use reasonable administrative, technical, and
@@ -266,7 +260,7 @@ export function PrivacyPage() {
                 </p>
               </section>
 
-              <section id="changes" className="scroll-mt-8">
+              <section id="privacy-changes" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Changes to this policy</h2>
                 <p className="mt-6">
                   We may update this Privacy Policy as our products, practices,
@@ -276,7 +270,7 @@ export function PrivacyPage() {
                 </p>
               </section>
 
-              <section id="contact" className="scroll-mt-8">
+              <section id="privacy-contact" className="scroll-mt-8">
                 <h2 className="heading-xl sm:heading-2xl">Contact us</h2>
                 <p className="mt-6">
                   If you have a privacy question, concern, or request, contact
@@ -287,10 +281,6 @@ export function PrivacyPage() {
               </section>
             </article>
           </div>
-        </main>
-
-        <SiteFooter />
-      </div>
-    </div>
+        </section>
   )
 }

@@ -117,7 +117,7 @@ export function CookiePreferences() {
             understand how it performs, and improve your experience. Choose
             which optional cookies we may use. You can change these choices at
             any time.{' '}
-            <TextLink to="/privacy#cookies">Learn more</TextLink>
+            <TextLink to="/legal#privacy-cookies">Learn more</TextLink>
           </p>
 
           <div className="mt-7 space-y-6">

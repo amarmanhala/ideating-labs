@@ -18,6 +18,30 @@ making Cloudflare the catalog's single source of truth.
 The catalog API is currently read-only. If write endpoints are added later,
 local requests will modify production data and should be protected before use.
 
+## Supabase authentication
+
+Copy `.env.example` to `.env.local` and add the browser-safe credentials from
+the existing Supabase project:
+
+```sh
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_your_key
+```
+
+Never put a Supabase secret or service-role key in a `VITE_` variable. These
+values are bundled into the browser application. Add the same two variables to
+the Cloudflare GitHub build environment for production builds.
+
+In Supabase, keep email/password authentication and email confirmation enabled.
+Under Auth URL Configuration, set the production site URL to
+`https://ideatinglabs.com` and allow these redirect URLs:
+
+- `https://ideatinglabs.com/auth/callback`
+- `http://127.0.0.1:5173/auth/callback`
+
+Supabase's default email service is suitable for development testing only.
+Configure custom SMTP before production launch.
+
 ## Product API
 
 - `GET /api/products`
