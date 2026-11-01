@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router'
 import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
 import { CartPage } from './pages/CartPage'
+import { AccountPage } from './pages/AccountPage'
 import { FaqPage } from './pages/FaqPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
@@ -15,7 +16,7 @@ function HomePage() {
   return (
     <div className="h-dvh overflow-hidden bg-surface text-primary">
       <div className="mx-auto flex h-full w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
-        <SiteHeader />
+        <SiteHeader showAccountLinks />
 
         <main className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] pt-6 sm:pt-10 lg:pt-12">
           <section
@@ -66,6 +67,8 @@ function App() {
       <Route path="/shop" element={<ShopPage />} />
       <Route path="/shop/:slug" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/login" element={<AccountPage mode="login" />} />
+      <Route path="/signup" element={<AccountPage mode="signup" />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />

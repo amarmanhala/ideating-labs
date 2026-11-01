@@ -6,7 +6,6 @@ import {
   CloseBold,
   Minus,
   Plus,
-  UploadDocuments,
 } from '@openai/apps-sdk-ui/components/Icon'
 import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl'
 import { useRef, useState, type CSSProperties } from 'react'
@@ -35,11 +34,9 @@ export function ProductDetailPage() {
 function ProductDetail({ product }: { product: (typeof products)[number] }) {
   const dispatch = useAppDispatch()
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
-  const [fileNames, setFileNames] = useState('No files selected')
   const [added, setAdded] = useState(false)
   const [activeImage, setActiveImage] = useState(0)
   const [openSection, setOpenSection] = useState<'materials' | 'fit' | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
 
   const galleryTreatments = [
@@ -147,37 +144,6 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
                 </SegmentedControl.Option>
               ))}
             </SegmentedControl>
-          </div>
-
-          <div className="mt-8">
-            <p className="mb-3 text-xs uppercase text-secondary">Upload files</p>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,.pdf"
-              multiple
-              className="hidden"
-              onChange={(event) => {
-                const names = Array.from(event.target.files ?? []).map(
-                  (file) => file.name,
-                )
-                setFileNames(names.length ? names.join(', ') : 'No files selected')
-              }}
-            />
-            <div className="flex flex-wrap items-center gap-3">
-              <Button
-                type="button"
-                color="secondary"
-                variant="outline"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <UploadDocuments />
-                Choose files
-              </Button>
-              <span className="min-w-0 max-w-full truncate text-xs text-secondary sm:max-w-xs">
-                {fileNames}
-              </span>
-            </div>
           </div>
 
           <Button

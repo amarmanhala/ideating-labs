@@ -1,8 +1,9 @@
+import { ButtonLink } from '@openai/apps-sdk-ui/components/Button'
 import { ShoppingBag } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useAppSelector } from '../app/hooks'
 
-export function SiteHeader() {
+export function SiteHeader({ showAccountLinks = false }: { showAccountLinks?: boolean }) {
   const cartCount = useAppSelector((state) =>
     state.shop.cartItems.reduce((total, item) => total + item.quantity, 0),
   )
@@ -20,6 +21,16 @@ export function SiteHeader() {
         <TextLink to="/shop" underline={false}>Shop</TextLink>
         <TextLink to="/#about" underline={false}>About</TextLink>
         <TextLink to="/faq" underline={false}>FAQ</TextLink>
+        {showAccountLinks && (
+          <div className="flex items-center gap-2">
+            <ButtonLink to="/login" color="secondary" variant="outline" size="sm">
+              Login
+            </ButtonLink>
+            <ButtonLink to="/signup" color="primary" size="sm">
+              Sign Up
+            </ButtonLink>
+          </div>
+        )}
       </nav>
 
       <TextLink
