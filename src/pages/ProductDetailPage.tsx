@@ -35,8 +35,10 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
   const [fileNames, setFileNames] = useState('No files selected')
   const [added, setAdded] = useState(false)
+  const [activeImage, setActiveImage] = useState(0)
   const [openSection, setOpenSection] = useState<'materials' | 'fit' | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const galleryRef = useRef<HTMLDivElement>(null)
 
   const galleryTreatments = [
     'p-8 sm:p-14',
@@ -45,29 +47,59 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
   ]
 
   return (
-    <div className="h-dvh overflow-y-auto bg-surface text-primary lg:overflow-hidden">
-      <main className="grid lg:h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)]">
+    <div className="min-h-dvh bg-surface text-primary lg:h-dvh lg:overflow-hidden">
+      <main className="grid min-w-0 lg:h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)]">
         <section
           aria-label={`${product.name} image gallery`}
-          className="lg:h-dvh lg:overflow-y-auto lg:[scrollbar-width:none] lg:[-ms-overflow-style:none] lg:[&::-webkit-scrollbar]:hidden"
+          className="min-w-0"
         >
-          {galleryTreatments.map((treatment, index) => (
-            <figure
-              key={treatment}
-              className="flex min-h-[72dvh] items-center justify-center overflow-hidden sm:min-h-dvh"
-            >
-              <Image
-                src={product.image}
-                alt={`${product.name.toLowerCase()} ${index + 1} of ${galleryTreatments.length}`}
-                className={`h-full max-h-dvh w-full object-contain ${treatment}`}
-              />
-            </figure>
-          ))}
+          <div
+            ref={galleryRef}
+            onScroll={(event) => {
+              const gallery = event.currentTarget
+              setActiveImage(Math.round(gallery.scrollLeft / gallery.clientWidth))
+            }}
+            className="grid snap-x snap-mandatory auto-cols-[100%] grid-flow-col overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:h-dvh lg:overflow-x-hidden lg:overflow-y-auto"
+          >
+            {galleryTreatments.map((treatment, index) => (
+              <figure
+                key={treatment}
+                className="flex h-[min(100vw,65dvh)] min-w-0 snap-center items-center justify-center overflow-hidden lg:h-dvh"
+              >
+                <Image
+                  src={product.image}
+                  alt={`${product.name.toLowerCase()} ${index + 1} of ${galleryTreatments.length}`}
+                  className={`h-full max-h-full w-full object-contain ${treatment}`}
+                />
+              </figure>
+            ))}
+          </div>
+          <div className="flex justify-center py-1 lg:hidden" aria-label="Gallery images">
+            {galleryTreatments.map((treatment, index) => (
+              <button
+                key={treatment}
+                type="button"
+                aria-label={`Show product image ${index + 1}`}
+                aria-current={activeImage === index ? 'true' : undefined}
+                className="flex size-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
+                onClick={() =>
+                  galleryRef.current?.scrollTo({
+                    left: index * galleryRef.current.clientWidth,
+                    behavior: 'smooth',
+                  })
+                }
+              >
+                <span
+                  className={`size-1.5 rounded-full bg-current ${activeImage === index ? 'opacity-100' : 'opacity-30'}`}
+                />
+              </button>
+            ))}
+          </div>
         </section>
 
         <section
           aria-labelledby="product-title"
-          className="relative flex flex-col border-l border-default px-6 py-6 font-mono sm:px-10 sm:py-8 lg:h-dvh lg:overflow-y-auto xl:px-14 xl:py-10"
+          className="relative flex min-w-0 flex-col px-5 pb-8 pt-5 font-mono sm:px-10 sm:py-8 lg:h-dvh lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
         >
           <ButtonLink
             to="/shop"
@@ -75,29 +107,30 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
             variant="ghost"
             size="lg"
             aria-label="Close product details"
-            className="absolute right-4 top-4 sm:right-6 sm:top-6"
+            className="fixed right-4 top-4 z-20 bg-surface sm:right-6 sm:top-6 lg:absolute"
           >
             <CloseBold />
           </ButtonLink>
 
-          <div className="pr-14">
-            <h1 id="product-title" className="text-xl uppercase sm:text-2xl">
+          <div className="lg:pr-14">
+            <h1 id="product-title" className="wrap-anywhere text-xl uppercase sm:text-2xl">
               {product.name}
             </h1>
             <p className="mt-2 text-lg text-secondary">{product.price}</p>
           </div>
 
-          <p className="mt-12 max-w-2xl font-sans text-lg leading-relaxed sm:mt-16 sm:text-xl">
+          <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed lg:mt-16 lg:text-xl">
             {product.description}
           </p>
 
-          <div className="mt-10">
+          <div className="mt-6 min-w-0 lg:mt-10">
             <p className="mb-3 text-xs uppercase text-secondary">Select size</p>
             <SegmentedControl
               value={selectedSize}
               onChange={setSelectedSize}
               aria-label="Select product size"
               size="lg"
+              className="max-w-full"
             >
               {product.sizes.map((size) => (
                 <SegmentedControl.Option key={size} value={size}>
@@ -132,7 +165,7 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
                 <UploadDocuments />
                 Choose files
               </Button>
-              <span className="max-w-xs truncate text-xs text-secondary">
+              <span className="min-w-0 max-w-full truncate text-xs text-secondary sm:max-w-xs">
                 {fileNames}
               </span>
             </div>
@@ -142,7 +175,7 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
             type="button"
             color="primary"
             size="lg"
-            className="mt-8 self-start"
+            className="mt-8 w-full lg:w-auto lg:self-start"
             onClick={() => {
               dispatch(addToCart({ slug: product.slug, size: selectedSize }))
               setAdded(true)
