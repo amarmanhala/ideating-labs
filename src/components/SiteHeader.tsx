@@ -17,9 +17,7 @@ export function SiteHeader() {
         aria-label="Primary navigation"
         className="col-span-2 row-start-2 flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2 sm:col-span-1 sm:col-start-2 sm:row-start-1 sm:justify-end lg:gap-x-10"
       >
-        <TextLink to="/#studio" underline={false}>Studio</TextLink>
         <TextLink to="/shop" underline={false}>Shop</TextLink>
-        <TextLink to="/#archive" underline={false}>Archive</TextLink>
         <TextLink to="/#about" underline={false}>About</TextLink>
         <TextLink to="/faq" underline={false}>FAQ</TextLink>
       </nav>

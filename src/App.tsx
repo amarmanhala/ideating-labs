@@ -36,7 +36,7 @@ function HomePage() {
               opticallyAlign="start"
               className="mt-2 sm:mt-3"
             >
-              Explore more
+              SHOP NOW
               <ArrowRightSm />
             </ButtonLink>
           </section>
