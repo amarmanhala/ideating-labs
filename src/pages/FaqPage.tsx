@@ -194,7 +194,7 @@ export function FaqPage() {
               <section
                 key={group.title}
                 aria-labelledby={`faq-group-${groupIndex}`}
-                className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16"
+                className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16"
               >
                 <h2
                   id={`faq-group-${groupIndex}`}
@@ -203,7 +203,7 @@ export function FaqPage() {
                   {group.title}
                 </h2>
 
-                <div className="border-t border-default">
+                <div className="min-w-0 border-t border-default">
                   {group.items.map((item, itemIndex) => {
                     const itemId = `${groupIndex}-${itemIndex}`
                     const isOpen = openItem === itemId
@@ -220,7 +220,7 @@ export function FaqPage() {
                             block
                             aria-expanded={isOpen}
                             aria-controls={`faq-panel-${itemId}`}
-                            className="text-left font-sans [&>span]:w-full [&>span]:justify-between"
+                            className="h-auto min-h-12 whitespace-normal py-3 text-left font-sans leading-relaxed [&>span]:w-full [&>span]:min-w-0 [&>span]:justify-between [&>span]:gap-4"
                             style={disclosureButtonStyle}
                             onClick={() =>
                               setOpenItem((current) =>
@@ -228,7 +228,7 @@ export function FaqPage() {
                               )
                             }
                           >
-                            <span>{item.question}</span>
+                            <span className="min-w-0 flex-1 wrap-anywhere">{item.question}</span>
                             {isOpen ? (
                               <Minus className="size-5 shrink-0" />
                             ) : (
@@ -240,7 +240,7 @@ export function FaqPage() {
                         {isOpen && (
                           <p
                             id={`faq-panel-${itemId}`}
-                            className="max-w-4xl px-4 pb-6 pt-2 text-base leading-relaxed text-secondary sm:text-lg"
+                            className="max-w-4xl wrap-anywhere px-4 pb-6 pt-2 text-base leading-relaxed text-secondary sm:text-lg"
                           >
                             {item.answer}
                           </p>
