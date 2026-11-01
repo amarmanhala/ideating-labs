@@ -6,6 +6,7 @@ import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
 import { AccountPage } from './pages/AccountPage'
 import { AboutPage } from './pages/AboutPage'
+import { AdminPage } from './pages/AdminPage'
 import { CartPage } from './pages/CartPage'
 import { CustomerPage } from './pages/CustomerPage'
 import { FaqPage } from './pages/FaqPage'
@@ -77,6 +78,7 @@ function App() {
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
+      <Route path="/admin" element={<AdminPage />} />
     </Routes>
   )
 }

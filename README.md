@@ -10,9 +10,10 @@ npm run dev
 ```
 
 The Cloudflare Vite plugin serves the SPA, product images, and `/api/*` routes
-from the same local origin. Its D1 binding connects to the production
-`ideating-labs-products` database, making Cloudflare the catalog's single
-source of truth during local and deployed development.
+from the same local origin. During development, product API requests are
+proxied through `https://ideatinglabs.com` to the deployed Worker. Production
+and localhost therefore read the same `ideating-labs-products` D1 database,
+making Cloudflare the catalog's single source of truth.
 
 The catalog API is currently read-only. If write endpoints are added later,
 local requests will modify production data and should be protected before use.

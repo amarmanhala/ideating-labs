@@ -141,6 +141,20 @@ export default {
     }
 
     try {
+      if (
+        env.CATALOG_API_ORIGIN &&
+        (url.pathname === '/api/products' ||
+          url.pathname.startsWith('/api/products/'))
+      ) {
+        const upstreamUrl = new URL(
+          `${url.pathname}${url.search}`,
+          env.CATALOG_API_ORIGIN,
+        )
+        return fetch(upstreamUrl, {
+          headers: { Accept: 'application/json' },
+        })
+      }
+
       if (url.pathname === '/api/products' || url.pathname === '/api/products/') {
         return await listProducts(request, env)
       }

@@ -21,8 +21,10 @@ export default defineConfig(({ mode }) => {
         DB: bindings.d1({
           name: 'ideating-labs-products',
           id: productionDatabaseId,
-          dev: { remote: true },
         }),
+        CATALOG_API_ORIGIN: bindings.text(
+          mode === 'development' ? 'https://ideatinglabs.com' : '',
+        ),
       },
       observability: {
         enabled: true,
