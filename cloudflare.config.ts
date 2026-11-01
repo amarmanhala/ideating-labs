@@ -26,6 +26,8 @@ export default defineConfig(({ mode }) => {
           mode === 'development' ? 'https://ideatinglabs.com' : '',
         ),
         ADMIN_API_KEY: bindings.secret(),
+        SUPABASE_URL: bindings.secret(),
+        SUPABASE_PUBLISHABLE_KEY: bindings.secret(),
       },
       observability: {
         enabled: true,

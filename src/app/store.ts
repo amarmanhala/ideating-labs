@@ -1,50 +1,20 @@
-import {
-  configureStore,
-  createListenerMiddleware,
-  isAnyOf,
-} from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import accountReducer from '../features/account/accountSlice'
 import { catalogApi } from '../features/catalog/catalogApi'
-import { saveCart } from '../features/shop/cartPersistence'
-import shopReducer, {
-  addToCart,
-  clearCart,
-  decrementQuantity,
-  incrementQuantity,
-  type CartItem,
-} from '../features/shop/shopSlice'
-
-const cartPersistence = createListenerMiddleware()
-
-cartPersistence.startListening({
-  matcher: isAnyOf(
-    addToCart,
-    clearCart,
-    decrementQuantity,
-    incrementQuantity,
-  ),
-  effect: (_action, listenerApi) => {
-    const state = listenerApi.getState() as {
-      account: { status: string; userId: string | null }
-      shop: { cartItems: CartItem[] }
-    }
-
-    if (state.account.status === 'authenticated' && state.account.userId) {
-      saveCart(state.account.userId, state.shop.cartItems)
-    }
-  },
-})
+import { cartApi } from '../features/shop/cartApi'
+import shopReducer from '../features/shop/shopSlice'
 
 export const store = configureStore({
   reducer: {
     account: accountReducer,
     [catalogApi.reducerPath]: catalogApi.reducer,
+    [cartApi.reducerPath]: cartApi.reducer,
     shop: shopReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .prepend(cartPersistence.middleware)
-      .concat(catalogApi.middleware),
+      .concat(catalogApi.middleware)
+      .concat(cartApi.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>

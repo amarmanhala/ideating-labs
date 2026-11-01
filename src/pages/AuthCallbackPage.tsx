@@ -19,9 +19,10 @@ export function AuthCallbackPage() {
 
     if (status === 'authenticated') {
       handled.current = true
-      const restoredCart = restorePendingCart(dispatch)
       const next = getSafeInternalPath(searchParams.get('next'))
-      navigate(restoredCart ? '/cart' : next, { replace: true })
+      void restorePendingCart(dispatch).then((restoredCart) => {
+        navigate(restoredCart ? '/cart' : next, { replace: true })
+      })
       return
     }
   }, [dispatch, navigate, searchParams, status])

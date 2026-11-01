@@ -22,6 +22,18 @@ type ProductRow = {
   size: string | null
 }
 
+type CartRow = {
+  slug: string
+  size: string
+  quantity: number
+}
+
+type CartItemInput = {
+  slug: string
+  size: string
+  quantity: number
+}
+
 const selectProducts = `
   SELECT
     p.id,
@@ -92,6 +104,175 @@ function parseCategory(value: string | null) {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function parseCartItem(value: unknown):
+  | { data: CartItemInput }
+  | { error: string } {
+  if (!isRecord(value)) return { error: 'Cart item details are required.' }
+
+  const slug = typeof value.slug === 'string' ? value.slug.trim() : ''
+  const size = typeof value.size === 'string' ? value.size.trim() : ''
+  const quantity = value.quantity
+
+  if (!slug || slug.length > 120) return { error: 'A valid product is required.' }
+  if (!size || size.length > 24) return { error: 'A valid size is required.' }
+  if (
+    typeof quantity !== 'number' ||
+    !Number.isInteger(quantity) ||
+    quantity < 1 ||
+    quantity > 99
+  ) {
+    return { error: 'Quantity must be an integer between 1 and 99.' }
+  }
+
+  return { data: { slug, size, quantity } }
+}
+
+async function requireUserId(request: Request, env: Env) {
+  const authorization = request.headers.get('Authorization')
+  const accessToken = authorization?.startsWith('Bearer ')
+    ? authorization.slice('Bearer '.length).trim()
+    : ''
+
+  if (!accessToken) return null
+  if (!env.SUPABASE_URL || !env.SUPABASE_PUBLISHABLE_KEY) {
+    throw new Error('Supabase authentication bindings are not configured.')
+  }
+
+  let userUrl: URL
+  try {
+    userUrl = new URL('/auth/v1/user', env.SUPABASE_URL)
+  } catch {
+    throw new Error('The Supabase URL binding is invalid.')
+  }
+
+  const response = await fetch(userUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+    },
+  })
+  if (!response.ok) return null
+
+  const user: unknown = await response.json()
+  if (!isRecord(user) || typeof user.id !== 'string' || !user.id) return null
+  return user.id
+}
+
+async function listCart(userId: string, env: Env) {
+  const result = await env.DB.prepare(
+    `SELECT p.slug, ci.size, ci.quantity
+     FROM cart_items AS ci
+     INNER JOIN products AS p ON p.id = ci.product_id
+     WHERE ci.user_id = ? AND p.is_active = 1
+     ORDER BY ci.created_at, p.display_order, p.id`,
+  )
+    .bind(userId)
+    .all<CartRow>()
+
+  return result.results
+}
+
+async function cartResponse(userId: string, env: Env) {
+  return Response.json(
+    { data: await listCart(userId, env) },
+    { headers: noStoreHeaders },
+  )
+}
+
+async function getCart(request: Request, env: Env) {
+  const userId = await requireUserId(request, env)
+  if (!userId) {
+    return apiError(401, 'UNAUTHORIZED', 'Please log in to view your cart.')
+  }
+  return cartResponse(userId, env)
+}
+
+async function findCartProduct(
+  item: Pick<CartItemInput, 'slug' | 'size'>,
+  env: Env,
+) {
+  return env.DB.prepare(
+    `SELECT p.id
+     FROM products AS p
+     INNER JOIN product_sizes AS ps ON ps.product_id = p.id
+     WHERE p.slug = ? AND ps.size = ? AND p.is_active = 1
+     LIMIT 1`,
+  )
+    .bind(item.slug, item.size)
+    .first<{ id: number }>()
+}
+
+async function writeCartItem(request: Request, env: Env, mode: 'add' | 'set') {
+  const userId = await requireUserId(request, env)
+  if (!userId) {
+    return apiError(401, 'UNAUTHORIZED', 'Please log in to update your cart.')
+  }
+
+  let body: unknown
+  try {
+    body = await request.json()
+  } catch {
+    return apiError(400, 'INVALID_JSON', 'Cart item details must be valid JSON.')
+  }
+
+  const parsed = parseCartItem(body)
+  if ('error' in parsed) return apiError(400, 'INVALID_CART_ITEM', parsed.error)
+
+  const item = parsed.data
+  const product = await findCartProduct(item, env)
+  if (!product) {
+    return apiError(404, 'PRODUCT_NOT_FOUND', 'That product or size is unavailable.')
+  }
+
+  if (mode === 'add') {
+    await env.DB.prepare(
+      `INSERT INTO cart_items (user_id, product_id, size, quantity)
+       VALUES (?, ?, ?, ?)
+       ON CONFLICT(user_id, product_id, size) DO UPDATE SET
+         quantity = MIN(99, cart_items.quantity + excluded.quantity),
+         updated_at = datetime('now')`,
+    )
+      .bind(userId, product.id, item.size, item.quantity)
+      .run()
+  } else {
+    await env.DB.prepare(
+      `INSERT INTO cart_items (user_id, product_id, size, quantity)
+       VALUES (?, ?, ?, ?)
+       ON CONFLICT(user_id, product_id, size) DO UPDATE SET
+         quantity = excluded.quantity,
+         updated_at = datetime('now')`,
+    )
+      .bind(userId, product.id, item.size, item.quantity)
+      .run()
+  }
+
+  return cartResponse(userId, env)
+}
+
+async function deleteCartItem(request: Request, env: Env) {
+  const userId = await requireUserId(request, env)
+  if (!userId) {
+    return apiError(401, 'UNAUTHORIZED', 'Please log in to update your cart.')
+  }
+
+  const url = new URL(request.url)
+  const slug = url.searchParams.get('slug')?.trim() ?? ''
+  const size = url.searchParams.get('size')?.trim() ?? ''
+  if (!slug || !size || slug.length > 120 || size.length > 24) {
+    return apiError(400, 'INVALID_CART_ITEM', 'A valid product and size are required.')
+  }
+
+  await env.DB.prepare(
+    `DELETE FROM cart_items
+     WHERE user_id = ? AND size = ?
+       AND product_id = (SELECT id FROM products WHERE slug = ? LIMIT 1)`,
+  )
+    .bind(userId, size, slug)
+    .run()
+
+  return cartResponse(userId, env)
 }
 
 function isValidImageUrl(value: string) {
@@ -356,7 +537,9 @@ export default {
         env.CATALOG_API_ORIGIN &&
         (url.pathname === '/api/products' ||
           url.pathname.startsWith('/api/products/') ||
-          url.pathname === '/api/admin/products')
+          url.pathname === '/api/admin/products' ||
+          url.pathname === '/api/cart' ||
+          url.pathname.startsWith('/api/cart/'))
       ) {
         const upstreamUrl = new URL(
           `${url.pathname}${url.search}`,
@@ -379,6 +562,24 @@ export default {
         return await createProduct(request, env)
       }
 
+      if (url.pathname === '/api/cart' || url.pathname === '/api/cart/') {
+        if (request.method !== 'GET') {
+          return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+        }
+        return await getCart(request, env)
+      }
+
+      if (url.pathname === '/api/cart/items') {
+        if (request.method === 'POST') {
+          return await writeCartItem(request, env, 'add')
+        }
+        if (request.method === 'PUT') {
+          return await writeCartItem(request, env, 'set')
+        }
+        if (request.method === 'DELETE') return await deleteCartItem(request, env)
+        return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+      }
+
       const match = url.pathname.match(/^\/api\/products\/([^/]+)\/?$/)
       if (match) {
         if (request.method !== 'GET') {
@@ -397,13 +598,13 @@ export default {
     } catch (error) {
       console.error(
         JSON.stringify({
-          message: 'Product API request failed',
+          message: 'API request failed',
           method: request.method,
           path: url.pathname,
           error: error instanceof Error ? error.message : String(error),
         }),
       )
-      return apiError(500, 'INTERNAL_ERROR', 'Unable to process product request.')
+      return apiError(500, 'INTERNAL_ERROR', 'Unable to process this request.')
     }
   },
 } satisfies ExportedHandler<Env>

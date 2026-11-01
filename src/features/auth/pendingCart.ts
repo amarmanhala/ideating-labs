@@ -1,5 +1,6 @@
 import type { AppDispatch } from '../../app/store'
-import { addToCart } from '../shop/shopSlice'
+import { cartApi } from '../shop/cartApi'
+import { replaceCart } from '../shop/shopSlice'
 
 const storageKey = 'ideating-labs:pending-cart:v1'
 const maxAgeMs = 24 * 60 * 60 * 1000
@@ -54,16 +55,22 @@ export function consumePendingCartItem(): PendingCartItem | null {
   }
 }
 
-export function restorePendingCart(dispatch: AppDispatch) {
+export async function restorePendingCart(dispatch: AppDispatch) {
   const item = consumePendingCartItem()
   if (!item) return false
 
-  dispatch(
-    addToCart({
-      slug: item.slug,
-      size: item.size,
-      quantity: item.quantity,
-    }),
-  )
-  return true
+  try {
+    const cart = await dispatch(
+      cartApi.endpoints.addCartItem.initiate({
+        slug: item.slug,
+        size: item.size,
+        quantity: item.quantity,
+      }),
+    ).unwrap()
+    dispatch(replaceCart(cart))
+    return true
+  } catch {
+    savePendingCartItem(item)
+    return false
+  }
 }

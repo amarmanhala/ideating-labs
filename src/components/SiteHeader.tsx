@@ -6,6 +6,7 @@ import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { useNavigate } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { setAnonymous } from '../features/account/accountSlice'
+import { cartApi } from '../features/shop/cartApi'
 import { clearCart } from '../features/shop/shopSlice'
 import { supabase } from '../lib/supabase'
 
@@ -76,6 +77,7 @@ export function SiteHeader() {
                 onSelect={() => {
                   void supabase?.auth.signOut()
                   dispatch(clearCart())
+                  dispatch(cartApi.util.resetApiState())
                   dispatch(setAnonymous())
                   navigate('/')
                 }}

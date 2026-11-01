@@ -65,8 +65,9 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
     }
 
     handledAuthentication.current = true
-    const restoredCart = restorePendingCart(dispatch)
-    navigate(restoredCart ? '/cart' : next, { replace: true })
+    void restorePendingCart(dispatch).then((restoredCart) => {
+      navigate(restoredCart ? '/cart' : next, { replace: true })
+    })
   }, [authStatus, dispatch, navigate, next])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -119,7 +120,7 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
         if (data.session && data.user) {
           handledAuthentication.current = true
           dispatch(setAuthenticated(accountFromUser(data.user)))
-          const restoredCart = restorePendingCart(dispatch)
+          const restoredCart = await restorePendingCart(dispatch)
           navigate(restoredCart ? '/cart' : next, { replace: true })
           return
         }
@@ -136,7 +137,7 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
 
       handledAuthentication.current = true
       dispatch(setAuthenticated(accountFromUser(data.user)))
-      const restoredCart = restorePendingCart(dispatch)
+      const restoredCart = await restorePendingCart(dispatch)
       navigate(restoredCart ? '/cart' : next, { replace: true })
     } catch (error) {
       const message = error instanceof Error ? error.message : ''

@@ -1,4 +1,5 @@
 import { Button } from '@openai/apps-sdk-ui/components/Button'
+import { Alert } from '@openai/apps-sdk-ui/components/Alert'
 import { Image } from '@openai/apps-sdk-ui/components/Image'
 import { Input } from '@openai/apps-sdk-ui/components/Input'
 import {
@@ -14,7 +15,8 @@ import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
 import { useGetProductQuery } from '../features/catalog/catalogApi'
 import { savePendingCartItem } from '../features/auth/pendingCart'
-import { addToCart } from '../features/shop/shopSlice'
+import { useAddCartItemMutation } from '../features/shop/cartApi'
+import { replaceCart } from '../features/shop/shopSlice'
 import type { Product } from '../types/catalog'
 import { formatPrice } from '../utils/currency'
 
@@ -68,6 +70,8 @@ function ProductDetail({ product }: { product: Product }) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const authStatus = useAppSelector((state) => state.account.status)
+  const [addCartItem, { isLoading: isAddingToCart }] = useAddCartItemMutation()
+  const [cartError, setCartError] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
   const [quantity, setQuantity] = useState(1)
   const [activeImage, setActiveImage] = useState(0)
@@ -196,9 +200,10 @@ function ProductDetail({ product }: { product: Product }) {
             type="button"
             color="primary"
             size="lg"
-            loading={authStatus === 'initializing'}
+            loading={authStatus === 'initializing' || isAddingToCart}
             className="mt-8 w-full lg:w-auto lg:self-start"
-            onClick={() => {
+            onClick={async () => {
+              setCartError(null)
               if (authStatus !== 'authenticated') {
                 savePendingCartItem({
                   slug: product.slug,
@@ -209,18 +214,30 @@ function ProductDetail({ product }: { product: Product }) {
                 return
               }
 
-              dispatch(
-                addToCart({
+              try {
+                const cart = await addCartItem({
                   slug: product.slug,
                   size: selectedSize,
                   quantity,
-                }),
-              )
-              navigate('/cart')
+                }).unwrap()
+                dispatch(replaceCart(cart))
+                navigate('/cart')
+              } catch {
+                setCartError('We couldn’t add this item. Please try again.')
+              }
             }}
           >
             Add to cart
           </Button>
+
+          {cartError && (
+            <Alert
+              color="danger"
+              title="Cart not updated"
+              description={cartError}
+              className="mt-4"
+            />
+          )}
 
           <div className="mt-auto pt-10 font-sans">
             <div className="border-t border-default py-2">

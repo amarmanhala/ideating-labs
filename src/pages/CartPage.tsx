@@ -8,24 +8,45 @@ import {
   Trash,
 } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
+import { Alert } from '@openai/apps-sdk-ui/components/Alert'
+import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
 import { useGetProductsQuery } from '../features/catalog/catalogApi'
 import {
-  decrementQuantity,
-  incrementQuantity,
-} from '../features/shop/shopSlice'
+  useGetCartQuery,
+  useRemoveCartItemMutation,
+  useSetCartItemQuantityMutation,
+} from '../features/shop/cartApi'
+import { replaceCart } from '../features/shop/shopSlice'
 import { formatPrice } from '../utils/currency'
 
 export function CartPage() {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.shop.cartItems)
+  const [updateError, setUpdateError] = useState<string | null>(null)
+  const {
+    data: serverCart,
+    isLoading: isCartLoading,
+    isError: isCartError,
+    refetch: refetchCart,
+  } = useGetCartQuery()
+  const [setCartItemQuantity, { isLoading: isSettingQuantity }] =
+    useSetCartItemQuantityMutation()
+  const [removeCartItem, { isLoading: isRemovingItem }] =
+    useRemoveCartItemMutation()
+
+  useEffect(() => {
+    if (serverCart) dispatch(replaceCart(serverCart))
+  }, [dispatch, serverCart])
   const {
     data: products = [],
     isLoading,
     isError,
     refetch,
-  } = useGetProductsQuery(undefined, { skip: cartItems.length === 0 })
+  } = useGetProductsQuery(undefined, {
+    skip: isCartLoading || cartItems.length === 0,
+  })
   const productsBySlug = new Map(
     products.map((product) => [product.slug, product]),
   )
@@ -39,10 +60,35 @@ export function CartPage() {
     (total, item) => total + item.quantity,
     0,
   )
+  const isUpdating = isSettingQuantity || isRemovingItem
+
+  async function updateQuantity(
+    item: (typeof cartItems)[number],
+    quantity: number,
+  ) {
+    setUpdateError(null)
+    try {
+      const cart =
+        quantity === 0
+          ? await removeCartItem({ slug: item.slug, size: item.size }).unwrap()
+          : await setCartItemQuantity({ ...item, quantity }).unwrap()
+      dispatch(replaceCart(cart))
+    } catch {
+      setUpdateError('We couldn’t update your cart. Please try again.')
+    }
+  }
 
   return (
     <main className="mx-auto flex min-h-0 w-full max-w-[1400px] flex-1 flex-col overflow-y-auto py-6 sm:py-10 lg:overflow-hidden">
-        {cartItems.length === 0 ? (
+        {isCartLoading ? (
+          <div className="flex flex-1 items-center justify-center">
+            <CatalogLoading label="Loading your cart…" />
+          </div>
+        ) : isCartError ? (
+          <div className="flex flex-1 items-center justify-center">
+            <CatalogError onRetry={refetchCart} />
+          </div>
+        ) : cartItems.length === 0 ? (
           <div className="flex flex-1 items-center justify-center">
             <EmptyMessage fill="none">
               <EmptyMessage.Icon size="md">
@@ -73,14 +119,20 @@ export function CartPage() {
               aria-label="Cart items"
               className="min-h-0 lg:overflow-y-auto lg:pr-4"
             >
+              {updateError && (
+                <Alert
+                  color="danger"
+                  title="Cart not updated"
+                  description={updateError}
+                  className="mb-4"
+                />
+              )}
               <div className="divide-y divide-default border-y border-default">
                 {cartItems.map((item) => {
                   const product = productsBySlug.get(item.slug)
                   if (!product) return null
 
                   const itemKey = `${item.slug}-${item.size}`
-                  const actionPayload = { slug: item.slug, size: item.size }
-
                   return (
                     <article
                       key={itemKey}
@@ -121,12 +173,15 @@ export function CartPage() {
                             pill={false}
                             uniform
                             size="lg"
+                            disabled={isUpdating}
                             aria-label={
                               item.quantity === 1
                                 ? `Remove ${product.name} from cart`
                                 : `Decrease ${product.name} quantity`
                             }
-                            onClick={() => dispatch(decrementQuantity(actionPayload))}
+                            onClick={() =>
+                              void updateQuantity(item, item.quantity - 1)
+                            }
                           >
                             {item.quantity === 1 ? <Trash /> : <Minus />}
                           </Button>
@@ -140,8 +195,11 @@ export function CartPage() {
                             pill={false}
                             uniform
                             size="lg"
+                            disabled={isUpdating || item.quantity >= 99}
                             aria-label={`Increase ${product.name} quantity`}
-                            onClick={() => dispatch(incrementQuantity(actionPayload))}
+                            onClick={() =>
+                              void updateQuantity(item, item.quantity + 1)
+                            }
                           >
                             <Plus />
                           </Button>
