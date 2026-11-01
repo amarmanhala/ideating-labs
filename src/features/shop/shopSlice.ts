@@ -66,6 +66,9 @@ const shopSlice = createSlice({
     clearCart: (state) => {
       state.cartItems = []
     },
+    replaceCart: (state, action: PayloadAction<CartItem[]>) => {
+      state.cartItems = action.payload
+    },
   },
 })
 
@@ -74,6 +77,7 @@ export const {
   clearCart,
   decrementQuantity,
   incrementQuantity,
+  replaceCart,
   setCategory,
 } = shopSlice.actions
 export default shopSlice.reducer

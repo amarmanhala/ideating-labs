@@ -75,8 +75,8 @@ export function SiteHeader() {
               <Menu.Item
                 onSelect={() => {
                   void supabase?.auth.signOut()
-                  dispatch(setAnonymous())
                   dispatch(clearCart())
+                  dispatch(setAnonymous())
                   navigate('/')
                 }}
               >
