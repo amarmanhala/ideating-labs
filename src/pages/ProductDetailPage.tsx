@@ -1,6 +1,8 @@
 import { Button, ButtonLink } from '@openai/apps-sdk-ui/components/Button'
 import { Image } from '@openai/apps-sdk-ui/components/Image'
 import {
+  ArrowLeft,
+  ArrowRight,
   CloseBold,
   Minus,
   Plus,
@@ -51,7 +53,7 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
       <main className="grid min-w-0 lg:h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)]">
         <section
           aria-label={`${product.name} image gallery`}
-          className="min-w-0"
+          className="relative min-w-0"
         >
           <div
             ref={galleryRef}
@@ -74,27 +76,34 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
               </figure>
             ))}
           </div>
-          <div className="flex justify-center py-1 lg:hidden" aria-label="Gallery images">
-            {galleryTreatments.map((treatment, index) => (
-              <button
-                key={treatment}
-                type="button"
-                aria-label={`Show product image ${index + 1}`}
-                aria-current={activeImage === index ? 'true' : undefined}
-                className="flex size-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
-                onClick={() =>
-                  galleryRef.current?.scrollTo({
-                    left: index * galleryRef.current.clientWidth,
-                    behavior: 'smooth',
-                  })
-                }
-              >
-                <span
-                  className={`size-1.5 rounded-full bg-current ${activeImage === index ? 'opacity-100' : 'opacity-30'}`}
-                />
-              </button>
-            ))}
-          </div>
+          <button
+            type="button"
+            aria-label="Previous product image"
+            disabled={activeImage === 0}
+            className="absolute left-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-primary disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
+            onClick={() =>
+              galleryRef.current?.scrollTo({
+                left: (activeImage - 1) * galleryRef.current.clientWidth,
+                behavior: 'smooth',
+              })
+            }
+          >
+            <ArrowLeft aria-hidden="true" className="size-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next product image"
+            disabled={activeImage === galleryTreatments.length - 1}
+            className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-primary disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
+            onClick={() =>
+              galleryRef.current?.scrollTo({
+                left: (activeImage + 1) * galleryRef.current.clientWidth,
+                behavior: 'smooth',
+              })
+            }
+          >
+            <ArrowRight aria-hidden="true" className="size-5" />
+          </button>
         </section>
 
         <section
