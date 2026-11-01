@@ -4,8 +4,10 @@ import { ArrowRightSm } from '@openai/apps-sdk-ui/components/Icon'
 import { Route, Routes } from 'react-router'
 import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
-import { CartPage } from './pages/CartPage'
 import { AccountPage } from './pages/AccountPage'
+import { AboutPage } from './pages/AboutPage'
+import { CartPage } from './pages/CartPage'
+import { CustomerPage } from './pages/CustomerPage'
 import { FaqPage } from './pages/FaqPage'
 import { PrivacyPage } from './pages/PrivacyPage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
@@ -34,7 +36,7 @@ function HomePage() {
               color="primary"
               variant="solid"
               size="md"
-              className="mt-2 sm:mt-3"
+              className="mt-5 sm:mt-6"
             >
               SHOP NOW
               <ArrowRightSm />
@@ -69,6 +71,9 @@ function App() {
       <Route path="/cart" element={<CartPage />} />
       <Route path="/login" element={<AccountPage mode="login" />} />
       <Route path="/signup" element={<AccountPage mode="signup" />} />
+      <Route path="/orders" element={<CustomerPage type="orders" />} />
+      <Route path="/wishlist" element={<CustomerPage type="wishlist" />} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />

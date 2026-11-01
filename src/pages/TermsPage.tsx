@@ -29,7 +29,7 @@ export function TermsPage() {
         <main className="flex-1 pb-24 pt-16 sm:pt-24">
           <div className="border-b border-subtle pb-12 sm:pb-16">
             <p className="text-sm text-secondary">Published: October 28, 2026</p>
-            <h1 className="mt-5 max-w-5xl text-5xl tracking-tight sm:text-7xl lg:text-8xl">
+            <h1 className="heading-3xl mt-5 max-w-5xl sm:heading-5xl">
               Terms of Use
             </h1>
             <p className="mt-6 text-base text-secondary">
@@ -51,7 +51,7 @@ export function TermsPage() {
 
             <article className="space-y-14 text-base leading-relaxed sm:text-lg">
               <section id="about" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">About these terms</h2>
+                <h2 className="heading-xl sm:heading-2xl">About these terms</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Thank you for visiting Ideating Labs. These Terms of Use
@@ -70,7 +70,7 @@ export function TermsPage() {
               </section>
 
               <section id="eligibility" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Eligibility</h2>
+                <h2 className="heading-xl sm:heading-2xl">Eligibility</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     You must be legally capable of entering into a binding
@@ -86,7 +86,7 @@ export function TermsPage() {
               </section>
 
               <section id="products" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Products and availability</h2>
+                <h2 className="heading-xl sm:heading-2xl">Products and availability</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     We create apparel and everyday objects carrying mindful,
@@ -103,7 +103,7 @@ export function TermsPage() {
               </section>
 
               <section id="orders" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Orders and payment</h2>
+                <h2 className="heading-xl sm:heading-2xl">Orders and payment</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Your order is an offer to purchase. An order confirmation
@@ -124,7 +124,7 @@ export function TermsPage() {
               </section>
 
               <section id="shipping" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Shipping and delivery</h2>
+                <h2 className="heading-xl sm:heading-2xl">Shipping and delivery</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Delivery dates are estimates, not guarantees. Timing can be
@@ -143,7 +143,7 @@ export function TermsPage() {
               </section>
 
               <section id="returns" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Returns and refunds</h2>
+                <h2 className="heading-xl sm:heading-2xl">Returns and refunds</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Return eligibility, timing, item condition, and refund
@@ -161,7 +161,7 @@ export function TermsPage() {
               </section>
 
               <section id="uploads" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Your uploads</h2>
+                <h2 className="heading-xl sm:heading-2xl">Your uploads</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Some products may let you upload artwork, images, text, or
@@ -183,7 +183,7 @@ export function TermsPage() {
               </section>
 
               <section id="wellness" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Wellness disclaimer</h2>
+                <h2 className="heading-xl sm:heading-2xl">Wellness disclaimer</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Our products use encouraging language about presence,
@@ -202,7 +202,7 @@ export function TermsPage() {
               </section>
 
               <section id="acceptable-use" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Acceptable use</h2>
+                <h2 className="heading-xl sm:heading-2xl">Acceptable use</h2>
                 <div className="mt-6 space-y-5">
                   <p>You may not use the Services to:</p>
                   <ul className="list-disc space-y-3 pl-6">
@@ -217,7 +217,7 @@ export function TermsPage() {
               </section>
 
               <section id="intellectual-property" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Intellectual property</h2>
+                <h2 className="heading-xl sm:heading-2xl">Intellectual property</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     The Services and their branding, product designs, copy,
@@ -236,7 +236,7 @@ export function TermsPage() {
               </section>
 
               <section id="third-parties" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Third-party services</h2>
+                <h2 className="heading-xl sm:heading-2xl">Third-party services</h2>
                 <p className="mt-6">
                   We may rely on third parties for payments, delivery,
                   analytics, file hosting, and other functionality. Their
@@ -248,7 +248,7 @@ export function TermsPage() {
               </section>
 
               <section id="disclaimers" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Disclaimers</h2>
+                <h2 className="heading-xl sm:heading-2xl">Disclaimers</h2>
                 <p className="mt-6">
                   To the maximum extent permitted by law, the Services are
                   provided on an “as available” basis. We do not promise that
@@ -259,7 +259,7 @@ export function TermsPage() {
               </section>
 
               <section id="liability" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Limitation of liability</h2>
+                <h2 className="heading-xl sm:heading-2xl">Limitation of liability</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     To the maximum extent permitted by law, Ideating Labs will
@@ -277,7 +277,7 @@ export function TermsPage() {
               </section>
 
               <section id="changes" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Changes to these terms</h2>
+                <h2 className="heading-xl sm:heading-2xl">Changes to these terms</h2>
                 <p className="mt-6">
                   We may update these Terms to reflect changes in our products,
                   Services, practices, or legal obligations. The updated
@@ -289,7 +289,7 @@ export function TermsPage() {
               </section>
 
               <section id="general" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">General terms</h2>
+                <h2 className="heading-xl sm:heading-2xl">General terms</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     If any provision is found unenforceable, the remaining

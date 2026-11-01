@@ -105,7 +105,7 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
 
         <section
           aria-labelledby="product-title"
-          className="relative flex min-w-0 flex-col px-5 pb-8 pt-5 font-mono sm:px-10 sm:py-8 lg:h-dvh lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
+          className="relative flex min-w-0 flex-col px-5 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-dvh lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
         >
           <ButtonLink
             to="/shop"
@@ -119,10 +119,10 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
           </ButtonLink>
 
           <div className="lg:pr-14">
-            <h1 id="product-title" className="wrap-anywhere text-xl uppercase sm:text-2xl">
+            <h1 id="product-title" className="heading-md wrap-anywhere font-mono uppercase sm:heading-lg">
               {product.name}
             </h1>
-            <p className="mt-2 text-lg text-secondary">{product.price}</p>
+            <p className="mt-2 font-mono text-lg text-secondary">{product.price}</p>
           </div>
 
           <p className="mt-6 max-w-2xl font-sans text-lg leading-relaxed lg:mt-16 lg:text-xl">
@@ -130,13 +130,13 @@ function ProductDetail({ product }: { product: (typeof products)[number] }) {
           </p>
 
           <div className="mt-6 min-w-0 lg:mt-10">
-            <p className="mb-3 text-xs uppercase text-secondary">Select size</p>
+            <p className="mb-3 font-mono text-xs uppercase text-secondary">Select size</p>
             <SegmentedControl
               value={selectedSize}
               onChange={setSelectedSize}
               aria-label="Select product size"
               size="lg"
-              className="max-w-full"
+              className="max-w-full font-mono"
             >
               {product.sizes.map((size) => (
                 <SegmentedControl.Option key={size} value={size}>

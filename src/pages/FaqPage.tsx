@@ -182,7 +182,7 @@ export function FaqPage() {
   const [openItem, setOpenItem] = useState<string | null>(null)
 
   return (
-    <div className="min-h-screen bg-surface text-primary">
+    <div className="min-h-screen bg-surface font-sans text-primary">
       <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
         <SiteHeader />
 
@@ -198,7 +198,7 @@ export function FaqPage() {
               >
                 <h2
                   id={`faq-group-${groupIndex}`}
-                  className="font-mono text-sm uppercase"
+                  className="text-sm uppercase"
                 >
                   {group.title}
                 </h2>

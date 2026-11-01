@@ -28,7 +28,7 @@ export function PrivacyPage() {
         <main className="flex-1 pb-24 pt-16 sm:pt-24">
           <div className="border-b border-subtle pb-12 sm:pb-16">
             <p className="text-sm text-secondary">Published: October 28, 2026</p>
-            <h1 className="mt-5 max-w-5xl text-5xl tracking-tight sm:text-7xl lg:text-8xl">
+            <h1 className="heading-3xl mt-5 max-w-5xl sm:heading-5xl">
               Privacy Policy
             </h1>
             <p className="mt-6 text-base text-secondary">
@@ -50,7 +50,7 @@ export function PrivacyPage() {
 
             <article className="space-y-14 text-base leading-relaxed sm:text-lg">
               <section id="scope" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">About this policy</h2>
+                <h2 className="heading-xl sm:heading-2xl">About this policy</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Ideating Labs creates apparel and everyday objects carrying
@@ -69,7 +69,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="collection" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Information we collect</h2>
+                <h2 className="heading-xl sm:heading-2xl">Information we collect</h2>
                 <div className="mt-6 space-y-5">
                   <p>We collect information in three main ways:</p>
                   <ul className="list-disc space-y-3 pl-6">
@@ -99,7 +99,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="use" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">How we use information</h2>
+                <h2 className="heading-xl sm:heading-2xl">How we use information</h2>
                 <div className="mt-6 space-y-5">
                   <p>We use personal information to:</p>
                   <ul className="list-disc space-y-3 pl-6">
@@ -121,7 +121,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="sharing" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">How we share information</h2>
+                <h2 className="heading-xl sm:heading-2xl">How we share information</h2>
                 <div className="mt-6 space-y-5">
                   <p>We may disclose personal information to:</p>
                   <ul className="list-disc space-y-3 pl-6">
@@ -154,7 +154,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="payments" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Payments</h2>
+                <h2 className="heading-xl sm:heading-2xl">Payments</h2>
                 <p className="mt-6">
                   Payments are processed by third-party payment providers. We
                   generally receive transaction details, such as payment status,
@@ -166,7 +166,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="uploads" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Files you upload</h2>
+                <h2 className="heading-xl sm:heading-2xl">Files you upload</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     If a product lets you upload artwork, images, text, or other
@@ -185,7 +185,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="cookies" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Cookies and analytics</h2>
+                <h2 className="heading-xl sm:heading-2xl">Cookies and analytics</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     We and our service providers may use cookies, local storage,
@@ -202,7 +202,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="retention" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Data retention</h2>
+                <h2 className="heading-xl sm:heading-2xl">Data retention</h2>
                 <p className="mt-6">
                   We keep personal information only as long as reasonably
                   necessary for the purposes described in this policy. The
@@ -216,7 +216,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="choices" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Your choices and rights</h2>
+                <h2 className="heading-xl sm:heading-2xl">Your choices and rights</h2>
                 <div className="mt-6 space-y-5">
                   <p>
                     Depending on where you live, you may have rights to access,
@@ -235,7 +235,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="transfers" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">International processing</h2>
+                <h2 className="heading-xl sm:heading-2xl">International processing</h2>
                 <p className="mt-6">
                   Ideating Labs and its providers may process information in
                   countries other than the one where you live. Privacy laws may
@@ -245,7 +245,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="children" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Children</h2>
+                <h2 className="heading-xl sm:heading-2xl">Children</h2>
                 <p className="mt-6">
                   The Services are not directed to children under 13, and we do
                   not knowingly collect their personal information. A person
@@ -257,7 +257,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="security" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Security</h2>
+                <h2 className="heading-xl sm:heading-2xl">Security</h2>
                 <p className="mt-6">
                   We use reasonable administrative, technical, and
                   organizational measures designed to protect personal
@@ -267,7 +267,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="changes" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Changes to this policy</h2>
+                <h2 className="heading-xl sm:heading-2xl">Changes to this policy</h2>
                 <p className="mt-6">
                   We may update this Privacy Policy as our products, practices,
                   or legal obligations change. We will post the updated version
@@ -277,7 +277,7 @@ export function PrivacyPage() {
               </section>
 
               <section id="contact" className="scroll-mt-8">
-                <h2 className="text-3xl tracking-tight sm:text-4xl">Contact us</h2>
+                <h2 className="heading-xl sm:heading-2xl">Contact us</h2>
                 <p className="mt-6">
                   If you have a privacy question, concern, or request, contact
                   Ideating Labs through the support channel provided on our

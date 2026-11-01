@@ -37,7 +37,7 @@ export function CartPage() {
     <div className="h-dvh overflow-hidden bg-surface font-mono text-primary">
       <main className="mx-auto flex h-full w-full max-w-[1200px] flex-col px-5 py-6 sm:px-10 sm:py-10 lg:px-14">
         <header className="flex items-center justify-between">
-          <h1 className="text-xl uppercase sm:text-2xl">Shopping cart</h1>
+          <h1 className="heading-xl font-sans">Shopping cart</h1>
           <ButtonLink
             to="/shop"
             color="secondary"
@@ -156,7 +156,12 @@ export function CartPage() {
                 <span>Subtotal</span>
                 <span>{currency(subtotal)}</span>
               </div>
-              <Button color="primary" size="2xl" block className="mt-8">
+              <Button
+                color="primary"
+                size="2xl"
+                block
+                className="mx-auto mt-8 max-w-2xl"
+              >
                 Checkout
               </Button>
             </footer>

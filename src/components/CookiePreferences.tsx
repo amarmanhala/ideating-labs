@@ -109,7 +109,7 @@ export function CookiePreferences() {
         onCancel={closeDialog}
       >
         <div className="p-6 sm:p-7">
-          <h2 id="cookie-preferences-title" className="text-2xl tracking-tight">
+          <h2 id="cookie-preferences-title" className="heading-lg">
             Cookie preferences
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-secondary">

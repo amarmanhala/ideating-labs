@@ -44,7 +44,7 @@ export function ShopPage() {
       <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-3 sm:px-8 sm:py-4 lg:px-12">
         <SiteHeader />
 
-        <main className="flex-1 pb-20 pt-16 font-mono sm:pt-24">
+        <main className="flex-1 pb-20 pt-16 sm:pt-24">
           <div className="mb-6 flex justify-end sm:hidden">
             <label>
               <span className="sr-only">Product category</span>
@@ -125,7 +125,7 @@ export function ShopPage() {
                     >
                       {product.name}
                     </TextLink>
-                    <span className="text-secondary">{product.price}</span>
+                    <span className="font-mono text-secondary">{product.price}</span>
                   </div>
                 </article>
               ))}
