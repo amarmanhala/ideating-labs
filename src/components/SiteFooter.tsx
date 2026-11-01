@@ -9,7 +9,7 @@ export function SiteFooter() {
 
       <nav
         aria-label="Legal"
-        className="order-1 col-span-2 grid grid-cols-2 items-center gap-x-4 sm:order-none sm:flex sm:flex-wrap sm:gap-x-6 sm:gap-y-3 [&>a]:inline-flex [&>a]:min-h-11 [&>a]:items-center [&>button]:min-h-11 [&>button]:justify-self-start sm:[&>a]:min-h-0 sm:[&>button]:min-h-0"
+        className="order-1 col-span-2 flex flex-wrap items-center justify-start gap-x-1 min-[360px]:gap-x-3 sm:order-none sm:gap-x-6 sm:gap-y-3 [&>a]:inline-flex [&>a]:min-h-11 [&>a]:items-center [&>button]:min-h-11 sm:[&>a]:min-h-0 sm:[&>button]:min-h-0"
       >
         <CookiePreferences />
         <TextLink to="/privacy" underline={false} className="text-xs">Privacy</TextLink>
