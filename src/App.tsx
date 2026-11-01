@@ -31,9 +31,8 @@ function HomePage() {
             <ButtonLink
               to="/shop"
               color="primary"
-              variant="ghost"
+              variant="solid"
               size="md"
-              opticallyAlign="start"
               className="mt-2 sm:mt-3"
             >
               SHOP NOW
