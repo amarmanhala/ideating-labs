@@ -9,9 +9,11 @@ import { AboutPage } from './pages/AboutPage'
 import { AdminPage } from './pages/AdminPage'
 import { AuthCallbackPage } from './pages/AuthCallbackPage'
 import { CartPage } from './pages/CartPage'
+import { CheckoutSuccessPage } from './pages/CheckoutSuccessPage'
 import { CustomerPage } from './pages/CustomerPage'
 import { FaqPage } from './pages/FaqPage'
 import { LegalPage } from './pages/LegalPage'
+import { OrdersPage } from './pages/OrdersPage'
 import { ProductDetailPage } from './pages/ProductDetailPage'
 import { ShopPage } from './pages/ShopPage'
 
@@ -79,7 +81,15 @@ function App() {
           path="orders"
           element={
             <ProtectedRoute>
-              <CustomerPage type="orders" />
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="checkout/success"
+          element={
+            <ProtectedRoute>
+              <CheckoutSuccessPage />
             </ProtectedRoute>
           }
         />
@@ -87,7 +97,7 @@ function App() {
           path="wishlist"
           element={
             <ProtectedRoute>
-              <CustomerPage type="wishlist" />
+              <CustomerPage />
             </ProtectedRoute>
           }
         />

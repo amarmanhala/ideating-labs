@@ -7,6 +7,13 @@ import {
   type ProductDetailResponse,
   type ProductListResponse,
 } from '../src/types/catalog'
+import { requireUser } from './auth'
+import {
+  createCheckoutSession,
+  getOrder,
+  handleStripeWebhook,
+  listOrders,
+} from './payments'
 
 type ProductRow = {
   id: number
@@ -129,37 +136,6 @@ function parseCartItem(value: unknown):
   return { data: { slug, size, quantity } }
 }
 
-async function requireUserId(request: Request, env: Env) {
-  const authorization = request.headers.get('Authorization')
-  const accessToken = authorization?.startsWith('Bearer ')
-    ? authorization.slice('Bearer '.length).trim()
-    : ''
-
-  if (!accessToken) return null
-  if (!env.SUPABASE_URL || !env.SUPABASE_PUBLISHABLE_KEY) {
-    throw new Error('Supabase authentication bindings are not configured.')
-  }
-
-  let userUrl: URL
-  try {
-    userUrl = new URL('/auth/v1/user', env.SUPABASE_URL)
-  } catch {
-    throw new Error('The Supabase URL binding is invalid.')
-  }
-
-  const response = await fetch(userUrl, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      apikey: env.SUPABASE_PUBLISHABLE_KEY,
-    },
-  })
-  if (!response.ok) return null
-
-  const user: unknown = await response.json()
-  if (!isRecord(user) || typeof user.id !== 'string' || !user.id) return null
-  return user.id
-}
-
 async function listCart(userId: string, env: Env) {
   const result = await env.DB.prepare(
     `SELECT p.slug, ci.size, ci.quantity
@@ -182,11 +158,11 @@ async function cartResponse(userId: string, env: Env) {
 }
 
 async function getCart(request: Request, env: Env) {
-  const userId = await requireUserId(request, env)
-  if (!userId) {
+  const user = await requireUser(request, env)
+  if (!user) {
     return apiError(401, 'UNAUTHORIZED', 'Please log in to view your cart.')
   }
-  return cartResponse(userId, env)
+  return cartResponse(user.id, env)
 }
 
 async function findCartProduct(
@@ -205,8 +181,8 @@ async function findCartProduct(
 }
 
 async function writeCartItem(request: Request, env: Env, mode: 'add' | 'set') {
-  const userId = await requireUserId(request, env)
-  if (!userId) {
+  const user = await requireUser(request, env)
+  if (!user) {
     return apiError(401, 'UNAUTHORIZED', 'Please log in to update your cart.')
   }
 
@@ -234,7 +210,7 @@ async function writeCartItem(request: Request, env: Env, mode: 'add' | 'set') {
          quantity = MIN(99, cart_items.quantity + excluded.quantity),
          updated_at = datetime('now')`,
     )
-      .bind(userId, product.id, item.size, item.quantity)
+      .bind(user.id, product.id, item.size, item.quantity)
       .run()
   } else {
     await env.DB.prepare(
@@ -244,16 +220,16 @@ async function writeCartItem(request: Request, env: Env, mode: 'add' | 'set') {
          quantity = excluded.quantity,
          updated_at = datetime('now')`,
     )
-      .bind(userId, product.id, item.size, item.quantity)
+      .bind(user.id, product.id, item.size, item.quantity)
       .run()
   }
 
-  return cartResponse(userId, env)
+  return cartResponse(user.id, env)
 }
 
 async function deleteCartItem(request: Request, env: Env) {
-  const userId = await requireUserId(request, env)
-  if (!userId) {
+  const user = await requireUser(request, env)
+  if (!user) {
     return apiError(401, 'UNAUTHORIZED', 'Please log in to update your cart.')
   }
 
@@ -269,10 +245,10 @@ async function deleteCartItem(request: Request, env: Env) {
      WHERE user_id = ? AND size = ?
        AND product_id = (SELECT id FROM products WHERE slug = ? LIMIT 1)`,
   )
-    .bind(userId, size, slug)
+    .bind(user.id, size, slug)
     .run()
 
-  return cartResponse(userId, env)
+  return cartResponse(user.id, env)
 }
 
 function isValidImageUrl(value: string) {
@@ -539,7 +515,11 @@ export default {
           url.pathname.startsWith('/api/products/') ||
           url.pathname === '/api/admin/products' ||
           url.pathname === '/api/cart' ||
-          url.pathname.startsWith('/api/cart/'))
+          url.pathname.startsWith('/api/cart/') ||
+          url.pathname.startsWith('/api/checkout/') ||
+          url.pathname === '/api/orders' ||
+          url.pathname.startsWith('/api/orders/') ||
+          url.pathname.startsWith('/api/payments/'))
       ) {
         const upstreamUrl = new URL(
           `${url.pathname}${url.search}`,
@@ -578,6 +558,53 @@ export default {
         }
         if (request.method === 'DELETE') return await deleteCartItem(request, env)
         return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+      }
+
+      if (url.pathname === '/api/checkout/session') {
+        if (request.method !== 'POST') {
+          return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+        }
+        const user = await requireUser(request, env)
+        if (!user) {
+          return apiError(401, 'UNAUTHORIZED', 'Please log in to check out.')
+        }
+        return await createCheckoutSession(request, env, user)
+      }
+
+      if (url.pathname === '/api/payments/stripe/webhook') {
+        if (request.method !== 'POST') {
+          return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+        }
+        return await handleStripeWebhook(request, env)
+      }
+
+      if (url.pathname === '/api/orders' || url.pathname === '/api/orders/') {
+        if (request.method !== 'GET') {
+          return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+        }
+        const user = await requireUser(request, env)
+        if (!user) {
+          return apiError(401, 'UNAUTHORIZED', 'Please log in to view orders.')
+        }
+        return await listOrders(env, user)
+      }
+
+      const orderMatch = url.pathname.match(/^\/api\/orders\/([^/]+)\/?$/)
+      if (orderMatch) {
+        if (request.method !== 'GET') {
+          return apiError(405, 'METHOD_NOT_ALLOWED', 'Method not allowed.')
+        }
+        const user = await requireUser(request, env)
+        if (!user) {
+          return apiError(401, 'UNAUTHORIZED', 'Please log in to view orders.')
+        }
+        let orderId: string
+        try {
+          orderId = decodeURIComponent(orderMatch[1])
+        } catch {
+          return apiError(400, 'INVALID_ORDER_ID', 'Order ID is invalid.')
+        }
+        return await getOrder(orderId, env, user)
       }
 
       const match = url.pathname.match(/^\/api\/products\/([^/]+)\/?$/)

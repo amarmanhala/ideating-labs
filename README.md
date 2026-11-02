@@ -50,6 +50,34 @@ Configure custom SMTP before production launch.
 
 Catalog schema and seed data live in `migrations/`.
 
+## Stripe Checkout
+
+Checkout uses Stripe test mode, with the Cloudflare Worker as the only trusted
+payment backend. The Worker calculates totals from D1, creates Stripe-hosted
+Checkout Sessions, and records paid orders only after receiving a verified
+Stripe webhook.
+
+Add these secrets to the local `.dev.vars` file and to the deployed
+`ideating-labs` Worker. Never use `VITE_` variables for Stripe secrets:
+
+```sh
+STRIPE_SECRET_KEY=sk_test_replace_me
+STRIPE_WEBHOOK_SECRET=whsec_replace_me
+```
+
+Register this production Stripe webhook endpoint:
+
+```text
+https://ideatinglabs.com/api/payments/stripe/webhook
+```
+
+Subscribe it to `checkout.session.completed`,
+`checkout.session.async_payment_succeeded`,
+`checkout.session.async_payment_failed`, `checkout.session.expired`, and
+`charge.refunded`. Enable Stripe Tax, configure the applicable Canadian tax
+registrations and apparel tax codes, and enable Stripe receipt emails before
+accepting live payments.
+
 ## Checks
 
 ```sh

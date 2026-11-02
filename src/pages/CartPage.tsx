@@ -9,10 +9,11 @@ import {
 } from '@openai/apps-sdk-ui/components/Icon'
 import { TextLink } from '@openai/apps-sdk-ui/components/TextLink'
 import { Alert } from '@openai/apps-sdk-ui/components/Alert'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
 import { useGetProductsQuery } from '../features/catalog/catalogApi'
+import { useCreateCheckoutSessionMutation } from '../features/orders/paymentApi'
 import {
   useGetCartQuery,
   useRemoveCartItemMutation,
@@ -25,6 +26,9 @@ export function CartPage() {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.shop.cartItems)
   const [updateError, setUpdateError] = useState<string | null>(null)
+  const checkoutKey = useRef(crypto.randomUUID())
+  const [createCheckoutSession, { isLoading: isStartingCheckout }] =
+    useCreateCheckoutSessionMutation()
   const {
     data: serverCart,
     isLoading: isCartLoading,
@@ -75,6 +79,18 @@ export function CartPage() {
       dispatch(replaceCart(cart))
     } catch {
       setUpdateError('We couldn’t update your cart. Please try again.')
+    }
+  }
+
+  async function beginCheckout() {
+    setUpdateError(null)
+    try {
+      const checkoutUrl = await createCheckoutSession({
+        checkoutKey: checkoutKey.current,
+      }).unwrap()
+      window.location.assign(checkoutUrl)
+    } catch {
+      setUpdateError('We couldn’t start checkout. Please try again.')
     }
   }
 
@@ -232,7 +248,16 @@ export function CartPage() {
                 <p className="mt-3 text-sm leading-relaxed text-secondary">
                   Shipping and taxes are calculated at checkout.
                 </p>
-                <Button color="primary" size="xl" block className="mt-6">
+                <Button
+                  type="button"
+                  color="primary"
+                  size="xl"
+                  block
+                  className="mt-6"
+                  loading={isStartingCheckout}
+                  disabled={isUpdating}
+                  onClick={() => void beginCheckout()}
+                >
                   Proceed to checkout
                 </Button>
               </div>

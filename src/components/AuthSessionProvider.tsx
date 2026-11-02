@@ -5,6 +5,7 @@ import {
   setAuthenticated,
 } from '../features/account/accountSlice'
 import { accountFromUser } from '../features/auth/user'
+import { paymentApi } from '../features/orders/paymentApi'
 import { cartApi } from '../features/shop/cartApi'
 import { clearCart, replaceCart } from '../features/shop/shopSlice'
 import { supabase } from '../lib/supabase'
@@ -45,6 +46,7 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
         dispatch(setAnonymous())
         dispatch(clearCart())
         dispatch(cartApi.util.resetApiState())
+        dispatch(paymentApi.util.resetApiState())
       }
     })
 
@@ -60,6 +62,7 @@ export function AuthSessionProvider({ children }: { children: ReactNode }) {
         dispatch(setAnonymous())
         dispatch(clearCart())
         dispatch(cartApi.util.resetApiState())
+        dispatch(paymentApi.util.resetApiState())
       }
     })
 

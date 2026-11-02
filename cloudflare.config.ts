@@ -28,6 +28,8 @@ export default defineConfig(({ mode }) => {
         ADMIN_API_KEY: bindings.secret(),
         SUPABASE_URL: bindings.secret(),
         SUPABASE_PUBLISHABLE_KEY: bindings.secret(),
+        STRIPE_SECRET_KEY: bindings.secret(),
+        STRIPE_WEBHOOK_SECRET: bindings.secret(),
       },
       observability: {
         enabled: true,
