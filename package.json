@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "cf dev --mode production",
     "deploy": "cf deploy",
+    "deploy:production": "node scripts/deploy-cloudflare.mjs",
     "deploy:dry-run": "cf deploy --dry-run",
     "cf:typegen": "cf workers types",
     "db:migrate:remote": "cf d1 migrations apply 561d7f5d-4cf7-425c-81a6-8d425e6ed2f1"
