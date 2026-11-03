@@ -93,6 +93,7 @@ export function CartPage() {
       }).unwrap()
       window.location.assign(checkoutUrl)
     } catch {
+      checkoutKey.current = crypto.randomUUID()
       setCheckoutError('We couldn’t start checkout. Please try again.')
     }
   }
