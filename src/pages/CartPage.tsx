@@ -26,6 +26,7 @@ export function CartPage() {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector((state) => state.shop.cartItems)
   const [updateError, setUpdateError] = useState<string | null>(null)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const checkoutKey = useRef(crypto.randomUUID())
   const [createCheckoutSession, { isLoading: isStartingCheckout }] =
     useCreateCheckoutSessionMutation()
@@ -71,6 +72,7 @@ export function CartPage() {
     quantity: number,
   ) {
     setUpdateError(null)
+    setCheckoutError(null)
     try {
       const cart =
         quantity === 0
@@ -84,13 +86,14 @@ export function CartPage() {
 
   async function beginCheckout() {
     setUpdateError(null)
+    setCheckoutError(null)
     try {
       const checkoutUrl = await createCheckoutSession({
         checkoutKey: checkoutKey.current,
       }).unwrap()
       window.location.assign(checkoutUrl)
     } catch {
-      setUpdateError('We couldn’t start checkout. Please try again.')
+      setCheckoutError('We couldn’t start checkout. Please try again.')
     }
   }
 
@@ -135,11 +138,11 @@ export function CartPage() {
               aria-label="Cart items"
               className="min-h-0 lg:overflow-y-auto lg:pr-4"
             >
-              {updateError && (
+              {(updateError || checkoutError) && (
                 <Alert
                   color="danger"
-                  title="Cart not updated"
-                  description={updateError}
+                  title={checkoutError ? 'Checkout unavailable' : 'Cart not updated'}
+                  description={checkoutError ?? updateError ?? undefined}
                   className="mb-4"
                 />
               )}

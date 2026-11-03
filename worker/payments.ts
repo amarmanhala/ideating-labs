@@ -298,6 +298,7 @@ export async function createCheckoutSession(
       {
         mode: 'payment',
         customer: stripeCustomerId,
+        customer_update: { shipping: 'auto' },
         client_reference_id: orderId,
         metadata: { order_id: orderId },
         allowed_payment_method_types: ['card'],
