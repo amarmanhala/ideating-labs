@@ -85,10 +85,10 @@ function ProductDetail({ product }: { product: Product }) {
   ]
 
   return (
-      <main className="grid min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-y-contain lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)]">
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overscroll-y-contain lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
         <section
           aria-label={`${product.name} image gallery`}
-          className="relative min-h-0 min-w-0"
+          className="relative min-h-0 min-w-0 shrink-0 lg:shrink"
         >
           <div
             ref={galleryRef}
@@ -143,7 +143,7 @@ function ProductDetail({ product }: { product: Product }) {
 
         <section
           aria-labelledby="product-title"
-          className="relative flex min-h-0 min-w-0 flex-col px-5 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
+          className="relative z-10 flex min-h-0 min-w-0 shrink-0 flex-col bg-surface px-5 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:shrink lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
         >
           <div>
             <h1 id="product-title" className="heading-md wrap-anywhere font-mono uppercase sm:heading-lg">
