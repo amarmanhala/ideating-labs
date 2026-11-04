@@ -34,7 +34,15 @@ export async function requireUser(
       apikey: env.SUPABASE_PUBLISHABLE_KEY,
     },
   })
-  if (!response.ok) return null
+  if (!response.ok) {
+    console.warn(
+      JSON.stringify({
+        message: 'Supabase user verification failed',
+        status: response.status,
+      }),
+    )
+    return null
+  }
 
   const user: unknown = await response.json()
   if (

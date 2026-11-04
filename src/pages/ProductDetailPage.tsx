@@ -222,7 +222,21 @@ function ProductDetail({ product }: { product: Product }) {
                 }).unwrap()
                 dispatch(replaceCart(cart))
                 navigate('/cart')
-              } catch {
+              } catch (error) {
+                if (
+                  typeof error === 'object' &&
+                  error !== null &&
+                  'status' in error &&
+                  error.status === 401
+                ) {
+                  savePendingCartItem({
+                    slug: product.slug,
+                    size: selectedSize,
+                    quantity,
+                  })
+                  navigate('/login?next=%2Fcart')
+                  return
+                }
                 setCartError('We couldn’t add this item. Please try again.')
               }
             }}

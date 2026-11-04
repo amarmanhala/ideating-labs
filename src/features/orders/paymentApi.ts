@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { supabase } from '../../lib/supabase'
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { createAuthenticatedBaseQuery } from '../../lib/authenticatedBaseQuery'
 import type {
   CheckoutSessionResponse,
   Order,
@@ -9,17 +9,7 @@ import type {
 
 export const paymentApi = createApi({
   reducerPath: 'paymentApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
-    prepareHeaders: async (headers) => {
-      const { data } = (await supabase?.auth.getSession()) ?? {
-        data: { session: null },
-      }
-      const accessToken = data.session?.access_token
-      if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`)
-      return headers
-    },
-  }),
+  baseQuery: createAuthenticatedBaseQuery('/api'),
   tagTypes: ['Orders'],
   endpoints: (builder) => ({
     createCheckoutSession: builder.mutation<string, { checkoutKey: string }>({
