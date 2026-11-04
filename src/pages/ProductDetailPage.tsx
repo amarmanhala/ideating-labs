@@ -53,7 +53,7 @@ export function ProductDetailPage() {
 
   if (error) {
     return (
-      <main className="flex min-h-0 flex-1 items-center justify-center px-5">
+      <main className="flex min-h-0 flex-1 items-center justify-center px-3 sm:px-5">
         <CatalogError onRetry={refetch} />
       </main>
     )
@@ -143,7 +143,7 @@ function ProductDetail({ product }: { product: Product }) {
 
         <section
           aria-labelledby="product-title"
-          className="relative z-10 flex min-h-0 min-w-0 shrink-0 flex-col bg-surface px-5 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:shrink lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
+          className="relative z-10 flex min-h-0 min-w-0 shrink-0 flex-col bg-surface px-3 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:shrink lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
         >
           <div>
             <h1 id="product-title" className="heading-md wrap-anywhere font-mono uppercase sm:heading-lg">

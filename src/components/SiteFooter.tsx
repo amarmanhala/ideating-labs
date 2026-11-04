@@ -4,7 +4,7 @@ import { CookiePreferences } from './CookiePreferences'
 
 export function SiteFooter() {
   return (
-    <footer className="mt-6 grid grid-cols-2 items-center gap-x-4 gap-y-3 border-t border-default pt-3 sm:mt-4 sm:flex sm:flex-wrap sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:border-0 sm:pt-0">
+    <footer className="fixed inset-x-0 bottom-0 z-20 mx-auto grid w-full max-w-[1600px] grid-cols-2 items-center gap-x-3 gap-y-2 bg-surface px-3 pt-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:static sm:mt-4 sm:flex sm:flex-wrap sm:justify-between sm:gap-x-6 sm:gap-y-2 sm:px-0 sm:pb-0 sm:pt-0">
       <p className="order-2 text-xs text-secondary sm:order-none">Ideating Labs © 2026</p>
 
       <nav
