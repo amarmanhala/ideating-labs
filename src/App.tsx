@@ -48,7 +48,7 @@ function HomePage() {
           />
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-black/30" />
           <figcaption className="absolute inset-x-4 top-4 font-instrument font-normal text-left text-white sm:inset-x-6 sm:top-6">
-            <h2 className="text-2xl font-normal leading-tight sm:text-3xl">
+            <h2 className="text-3xl font-normal leading-tight sm:text-4xl">
               Project Overthinking
             </h2>
             <p className="mt-1 text-lg font-normal leading-tight sm:text-xl">
