@@ -32,32 +32,39 @@ function HomePage() {
           Creatively designed streetwear inspired by the thoughts we hide, the
           emotions we feel, and the conversations we need to have.
         </p>
-        <ButtonLink
-          to="/shop"
-          color="primary"
-          variant="solid"
-          size="md"
-          className="mt-5 sm:mt-6"
-        >
-          SHOP NOW
-          <ArrowRightSm />
-        </ButtonLink>
       </section>
 
       <section
         id="collection"
         aria-label="Project Overthinking — coming soon"
-        className="mt-4 min-h-0 max-h-[calc((100vw-1.5rem)*1.25)] overflow-hidden sm:mt-6 sm:max-h-none"
+        className="mt-4 min-h-0 overflow-hidden sm:mt-6"
       >
         <figure className="relative h-full w-full">
           <Image
-            src="/images/project-overthinking.png"
+            src="/images/project-overthinking-landscape.png"
             alt="Project Overthinking: a thoughtful model in dark streetwear on a New York street, surrounded by motion-blurred pedestrians"
             fetchPriority="high"
-            className="h-full w-full object-cover object-[50%_75%]"
+            className="h-full w-full object-cover object-[50%_30%]"
           />
-          <figcaption className="absolute inset-x-0 top-[81%] text-center font-mono text-[clamp(0.625rem,1.4vw,1rem)] uppercase tracking-[0.2em] text-white">
-            Coming Soon
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
+          <figcaption className="absolute inset-x-0 bottom-4 flex flex-col items-center px-4 text-center text-white sm:bottom-6">
+            <h2 className="font-mono text-[clamp(1.5rem,4vw,3.5rem)] leading-tight tracking-[0.12em] uppercase">
+              <span className="block">Project</span>
+              <span className="block">Overthinking</span>
+            </h2>
+            <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] sm:text-sm">
+              Coming Soon
+            </p>
+            <ButtonLink
+              to="/shop"
+              color="primary"
+              variant="solid"
+              size="md"
+              className="mt-4 border border-white/30"
+            >
+              SHOP NOW
+              <ArrowRightSm />
+            </ButtonLink>
           </figcaption>
         </figure>
       </section>
