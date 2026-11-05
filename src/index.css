@@ -1,3 +1,29 @@
 @import 'tailwindcss';
 @import '@openai/apps-sdk-ui/css';
 @source '../node_modules/@openai/apps-sdk-ui';
+
+@keyframes mobile-navigation-panel-enter {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mobile-navigation-link-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mobile-navigation-panel[open] {
+  animation: mobile-navigation-panel-enter calc(var(--transition-duration-basic) * 2) var(--cubic-enter) both;
+}
+
+.mobile-navigation-panel[open] .mobile-navigation-links > * {
+  animation: mobile-navigation-link-enter calc(var(--transition-duration-basic) * 3) var(--cubic-enter) both;
+  animation-delay: calc(var(--nav-order, 0) * 40ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-navigation-panel[open],
+  .mobile-navigation-panel[open] .mobile-navigation-links > * {
+    animation: none;
+  }
+}
