@@ -19,7 +19,7 @@ import { ShopPage } from './pages/ShopPage'
 
 function HomePage() {
   return (
-    <main className="grid min-h-0 flex-1 grid-rows-[auto_auto] pt-6 sm:pt-10 lg:pt-12">
+    <main className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] pt-4 sm:pt-6 lg:pt-8">
       <section
         id="studio"
         aria-labelledby="intro-heading"
@@ -47,16 +47,16 @@ function HomePage() {
       <section
         id="collection"
         aria-label="Project Overthinking — coming soon"
-        className="mt-5 min-h-0 sm:mt-8 lg:mt-10"
+        className="mt-4 min-h-0 max-h-[calc((100vw-1.5rem)*1.25)] overflow-hidden sm:mt-6 sm:max-h-none"
       >
-        <figure>
+        <figure className="relative h-full w-full">
           <Image
             src="/images/project-overthinking.png"
             alt="Project Overthinking: a thoughtful model in dark streetwear on a New York street, surrounded by motion-blurred pedestrians"
             fetchPriority="high"
-            className="aspect-[4/5] w-full object-cover object-center sm:aspect-[3/2]"
+            className="h-full w-full object-cover object-[50%_75%]"
           />
-          <figcaption className="mt-5 text-center font-mono text-sm uppercase tracking-widest text-secondary sm:mt-6 sm:text-base">
+          <figcaption className="absolute inset-x-0 top-[81%] text-center font-mono text-[clamp(0.625rem,1.4vw,1rem)] uppercase tracking-[0.2em] text-white">
             Coming Soon
           </figcaption>
         </figure>
