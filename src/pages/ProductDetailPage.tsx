@@ -85,7 +85,7 @@ function ProductDetail({ product }: { product: Product }) {
   ]
 
   return (
-      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overscroll-y-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
+      <main className="-mx-3 flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overscroll-y-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
         <section
           aria-label={`${product.name} image gallery`}
           className="relative min-h-0 min-w-0 shrink-0 lg:shrink"
@@ -115,7 +115,7 @@ function ProductDetail({ product }: { product: Product }) {
             type="button"
             aria-label="Previous product image"
             disabled={activeImage === 0}
-            className="absolute left-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-primary disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
+            className="absolute left-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-primary disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
             onClick={() =>
               galleryRef.current?.scrollTo({
                 left: (activeImage - 1) * galleryRef.current.clientWidth,
@@ -129,7 +129,7 @@ function ProductDetail({ product }: { product: Product }) {
             type="button"
             aria-label="Next product image"
             disabled={activeImage === galleryTreatments.length - 1}
-            className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-primary disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
+            className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-primary disabled:opacity-30 focus-visible:outline-2 focus-visible:outline-offset-2 lg:hidden"
             onClick={() =>
               galleryRef.current?.scrollTo({
                 left: (activeImage + 1) * galleryRef.current.clientWidth,
@@ -143,7 +143,7 @@ function ProductDetail({ product }: { product: Product }) {
 
         <section
           aria-labelledby="product-title"
-          className="relative z-10 flex min-h-0 min-w-0 shrink-0 flex-col bg-surface px-3 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:shrink lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
+          className="relative z-10 flex min-h-0 min-w-0 shrink-0 flex-col bg-surface px-6 pb-8 pt-5 sm:px-10 sm:py-8 lg:h-full lg:shrink lg:overflow-y-auto lg:border-l lg:border-default xl:px-14 xl:py-10"
         >
           <div>
             <h1 id="product-title" className="heading-md wrap-anywhere font-mono uppercase sm:heading-lg">
