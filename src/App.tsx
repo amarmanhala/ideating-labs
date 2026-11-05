@@ -41,7 +41,7 @@ function HomePage() {
       >
         <figure className="relative h-full w-full">
           <Image
-            src="/images/project-overthinking-landscape.png"
+            src="/images/project-overthinking-drop.png"
             alt="Project Overthinking: a thoughtful model in dark streetwear on a New York street, surrounded by motion-blurred pedestrians"
             fetchPriority="high"
             className="h-full w-full object-cover object-[50%_30%]"
