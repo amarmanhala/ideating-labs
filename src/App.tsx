@@ -19,7 +19,7 @@ import { ShopPage } from './pages/ShopPage'
 
 function HomePage() {
   return (
-    <main className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] pt-6 sm:pt-10 lg:pt-12">
+    <main className="grid min-h-0 flex-1 grid-rows-[auto_auto] pt-6 sm:pt-10 lg:pt-12">
       <section
         id="studio"
         aria-labelledby="intro-heading"
@@ -47,7 +47,7 @@ function HomePage() {
       <section
         id="collection"
         aria-label="Be Present collection"
-        className="mt-5 min-h-0 sm:mt-8 lg:mt-10"
+        className="mt-5 aspect-[8/3] min-h-0 sm:mt-8 lg:mt-10"
       >
         <Image
           src="/images/ideating-labs-collection.png"

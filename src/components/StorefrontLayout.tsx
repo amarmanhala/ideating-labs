@@ -6,7 +6,6 @@ export function StorefrontLayout() {
   const { pathname } = useLocation()
   const showsFooter = pathname === '/'
   const usesViewportHeight =
-    pathname === '/' ||
     pathname === '/cart' ||
     pathname === '/login' ||
     pathname === '/signup' ||
@@ -25,7 +24,7 @@ export function StorefrontLayout() {
     >
       <div
         className={`mx-auto flex w-full max-w-[1600px] flex-col px-3 pt-3 sm:px-8 sm:pb-4 sm:pt-4 lg:px-12 ${
-          showsFooter ? 'pb-28' : 'pb-3'
+          showsFooter ? 'pb-6' : 'pb-3'
         } ${
           usesViewportHeight ? 'h-full' : 'min-h-dvh'
         }`}
