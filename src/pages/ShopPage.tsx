@@ -118,17 +118,23 @@ export function ShopPage() {
                 </p>
               )}
               {products.map((product) => (
-                <article key={product.name} className="min-w-0">
+                <article key={product.name} className="group min-w-0">
                   <Link
                     to={`/shop/${product.slug}`}
                     aria-label={`View ${product.name}`}
                     className="block"
                   >
-                    <div className="aspect-square overflow-hidden">
+                    <div className="relative aspect-square overflow-hidden">
                       <Image
                         src={product.imageUrl}
                         alt={product.name.toLowerCase()}
-                        className="h-full w-full object-contain"
+                        className="h-full w-full object-contain transition-opacity duration-basic ease-basic group-hover:opacity-0 group-focus-within:opacity-0 motion-reduce:transition-none"
+                      />
+                      <Image
+                        src={product.imageUrl}
+                        alt=""
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 h-full w-full origin-center scale-125 object-contain opacity-0 transition-opacity duration-basic ease-basic group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none"
                       />
                     </div>
                   </Link>
