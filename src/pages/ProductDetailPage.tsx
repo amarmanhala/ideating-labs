@@ -201,7 +201,7 @@ function ProductDetail({ product }: { product: Product }) {
             color="primary"
             size="lg"
             loading={authStatus === 'initializing' || isAddingToCart}
-            className="mt-8 w-full lg:w-auto lg:self-start"
+            className="mt-8 w-full max-sm:min-h-14 max-sm:text-lg lg:w-auto lg:self-start"
             onClick={async () => {
               setCartError(null)
               if (authStatus !== 'authenticated') {
