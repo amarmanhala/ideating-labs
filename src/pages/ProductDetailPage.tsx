@@ -85,7 +85,7 @@ function ProductDetail({ product }: { product: Product }) {
   ]
 
   return (
-      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overscroll-y-contain lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overscroll-y-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(430px,0.95fr)] lg:grid-rows-[minmax(0,1fr)] lg:overflow-hidden">
         <section
           aria-label={`${product.name} image gallery`}
           className="relative min-h-0 min-w-0 shrink-0 lg:shrink"
@@ -96,7 +96,7 @@ function ProductDetail({ product }: { product: Product }) {
               const gallery = event.currentTarget
               setActiveImage(Math.round(gallery.scrollLeft / gallery.clientWidth))
             }}
-            className="grid snap-x snap-mandatory auto-cols-[100%] grid-flow-col overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:h-full lg:overflow-x-hidden lg:overflow-y-auto"
+            className="grid snap-x snap-mandatory auto-cols-[100%] grid-flow-col overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:block lg:h-full lg:overflow-x-hidden lg:overflow-y-auto"
           >
             {galleryTreatments.map((treatment, index) => (
               <figure
