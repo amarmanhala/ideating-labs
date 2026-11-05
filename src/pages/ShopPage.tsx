@@ -128,13 +128,13 @@ export function ShopPage() {
                       <Image
                         src={product.imageUrl}
                         alt={product.name.toLowerCase()}
-                        className="h-full w-full object-contain transition-opacity duration-basic ease-basic group-hover:opacity-0 group-focus-within:opacity-0 motion-reduce:transition-none"
+                        className="h-full w-full object-contain transition-opacity duration-[calc(var(--transition-duration-basic)*3)] ease-cubic-enter group-hover:opacity-0 group-focus-within:opacity-0 motion-reduce:transition-none"
                       />
                       <Image
                         src={product.imageUrl}
                         alt=""
                         aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 h-full w-full origin-center scale-125 object-contain opacity-0 transition-opacity duration-basic ease-basic group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none"
+                        className="pointer-events-none absolute inset-0 h-full w-full origin-center scale-125 object-contain opacity-0 transition-opacity duration-[calc(var(--transition-duration-basic)*3)] ease-cubic-enter group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none"
                       />
                     </div>
                   </Link>
