@@ -229,6 +229,7 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
             size="lg"
             pill
             block
+            className="max-sm:min-h-14 max-sm:text-lg"
             loading={isSubmitting}
           >
             {title}
