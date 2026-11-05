@@ -16,9 +16,9 @@ export function StorefrontLayout() {
 
   if (showsFooter) {
     return (
-      <div className="min-h-dvh bg-surface text-primary">
+      <div className="min-h-svh bg-surface text-primary">
         <div className="mx-auto w-full max-w-[1600px] px-3 sm:px-8 lg:px-12">
-          <div className="flex h-dvh flex-col py-3 sm:py-4">
+          <div className="flex h-svh flex-col py-3 sm:py-4">
             <SiteHeader />
             <Outlet />
           </div>
