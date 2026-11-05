@@ -46,26 +46,25 @@ function HomePage() {
             fetchPriority="high"
             className="h-full w-full object-cover object-[50%_30%]"
           />
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
-          <figcaption className="absolute inset-x-0 bottom-4 flex flex-col items-center px-4 text-center text-white sm:bottom-6">
-            <h2 className="font-mono text-[clamp(1.5rem,4vw,3.5rem)] leading-tight tracking-[0.12em] uppercase">
-              <span className="block">Project</span>
-              <span className="block">Overthinking</span>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-black/30" />
+          <figcaption className="absolute inset-x-4 top-4 font-instrument font-normal text-left text-white sm:inset-x-6 sm:top-6">
+            <h2 className="text-2xl font-normal leading-tight sm:text-3xl">
+              Project Overthinking
             </h2>
-            <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] sm:text-sm">
+            <p className="mt-1 text-lg font-normal leading-tight sm:text-xl">
               Coming Soon
             </p>
-            <ButtonLink
-              to="/shop"
-              color="primary"
-              variant="solid"
-              size="md"
-              className="mt-4 border border-white/30"
-            >
-              SHOP NOW
-              <ArrowRightSm />
-            </ButtonLink>
           </figcaption>
+          <ButtonLink
+            to="/shop"
+            color="primary"
+            variant="solid"
+            size="md"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 border border-white/30 sm:bottom-6"
+          >
+            SHOP NOW
+            <ArrowRightSm />
+          </ButtonLink>
         </figure>
       </section>
     </main>

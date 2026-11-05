@@ -2,6 +2,18 @@
 @import '@openai/apps-sdk-ui/css';
 @source '../node_modules/@openai/apps-sdk-ui';
 
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('/fonts/instrument-serif-regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@theme {
+  --font-instrument: 'Instrument Serif', Georgia, serif;
+}
+
 @keyframes mobile-navigation-panel-enter {
   from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
