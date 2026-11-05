@@ -39,6 +39,11 @@ export function SiteHeader() {
 
     const dialog = menuDialogRef.current
     const trigger = menuButtonRef.current
+    const triggerBounds = trigger?.getBoundingClientRect()
+    if (triggerBounds) {
+      dialog?.style.setProperty('--menu-close-top', `${triggerBounds.top}px`)
+      dialog?.style.setProperty('--menu-close-left', `${triggerBounds.left}px`)
+    }
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     dialog?.showModal()
@@ -174,14 +179,11 @@ export function SiteHeader() {
         }}
       >
         <div className="flex min-h-full flex-col px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]">
-          <div className="flex items-center justify-between gap-4">
-            <TextLink to="/" underline={false} className="heading-lg" onClick={() => setMenuOpen(false)}>
-              Ideating Labs.
-            </TextLink>
+          <div className="h-11 shrink-0">
             <button
               type="button"
               aria-label="Close navigation menu"
-              className="flex size-11 shrink-0 items-center justify-center rounded-full border border-default focus-visible:outline-2 focus-visible:outline-offset-2"
+              className="absolute left-[var(--menu-close-left)] top-[var(--menu-close-top)] flex size-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2"
               onClick={() => setMenuOpen(false)}
             >
               <CloseBold aria-hidden="true" className="size-5" />
@@ -212,7 +214,6 @@ export function SiteHeader() {
               </button>
             )}
           </nav>
-          <p className="pt-4 text-xs text-secondary">Creatively designed streetwear.</p>
         </div>
       </dialog>
     </header>
