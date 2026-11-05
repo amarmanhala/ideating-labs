@@ -46,14 +46,20 @@ function HomePage() {
 
       <section
         id="collection"
-        aria-label="Be Present collection"
-        className="mt-5 aspect-[8/3] min-h-0 sm:mt-8 lg:mt-10"
+        aria-label="Project Overthinking — coming soon"
+        className="mt-5 min-h-0 sm:mt-8 lg:mt-10"
       >
-        <Image
-          src="/images/ideating-labs-collection.png"
-          alt="A minimalist apparel collection featuring a hoodie, T-shirt, socks, quarter-zip, cap, and tote bag with encouraging messages"
-          className="h-full min-h-20 w-full object-contain object-center"
-        />
+        <figure>
+          <Image
+            src="/images/project-overthinking.png"
+            alt="Project Overthinking: a thoughtful model in dark streetwear on a New York street, surrounded by motion-blurred pedestrians"
+            fetchPriority="high"
+            className="aspect-[4/5] w-full object-cover object-center sm:aspect-[3/2]"
+          />
+          <figcaption className="mt-5 text-center font-mono text-sm uppercase tracking-widest text-secondary sm:mt-6 sm:text-base">
+            Coming Soon
+          </figcaption>
+        </figure>
       </section>
     </main>
   )
