@@ -8,7 +8,6 @@ import {
   Minus,
   Plus,
 } from '@openai/apps-sdk-ui/components/Icon'
-import { Select } from '@openai/apps-sdk-ui/components/Select'
 import { useRef, useState, type CSSProperties } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -158,20 +157,26 @@ function ProductDetail({ product }: { product: Product }) {
             {product.description}
           </p>
 
-          <div className="mt-6 min-w-0 lg:mt-10">
-            <label htmlFor="product-size" className="mb-3 block font-mono text-xs uppercase text-secondary">Select size</label>
-            <Select
-              id="product-size"
-              name="size"
-              value={selectedSize}
-              onChange={(option) => setSelectedSize(option.value)}
-              options={product.sizes.map((size) => ({ value: size, label: size }))}
-              size="3xl"
-              block
-              triggerClassName="min-h-14 w-full font-mono text-lg"
-              optionClassName="min-h-11 font-mono text-base"
-            />
-          </div>
+          <fieldset className="mt-6 min-w-0 lg:mt-10">
+            <legend className="mb-3 font-mono text-xs uppercase text-secondary">Select size</legend>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(4.5rem,1fr))] gap-3">
+              {product.sizes.map((size) => (
+                <Button
+                  key={size}
+                  type="button"
+                  color={selectedSize === size ? 'primary' : 'secondary'}
+                  variant={selectedSize === size ? 'solid' : 'outline'}
+                  size="3xl"
+                  block
+                  aria-pressed={selectedSize === size}
+                  className="h-auto min-h-14 min-w-0 whitespace-normal py-3 font-mono text-lg"
+                  onClick={() => setSelectedSize(size)}
+                >
+                  {size}
+                </Button>
+              ))}
+            </div>
+          </fieldset>
 
           <label className="mt-6 flex w-28 flex-col gap-2 font-sans text-sm">
             Quantity
