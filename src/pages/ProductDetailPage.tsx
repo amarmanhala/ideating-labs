@@ -169,7 +169,7 @@ function ProductDetail({ product }: { product: Product }) {
                   size="3xl"
                   block
                   aria-pressed={selectedSize === size}
-                  className="h-auto min-h-14 min-w-0 whitespace-normal py-3 font-mono text-lg"
+                  className="h-auto min-h-12 min-w-0 whitespace-normal py-2 font-mono text-base"
                   onClick={() => setSelectedSize(size)}
                 >
                   {size}
@@ -180,7 +180,7 @@ function ProductDetail({ product }: { product: Product }) {
 
           <fieldset className="mt-6 min-w-0">
             <legend className="mb-3 font-mono text-xs uppercase text-secondary">Quantity</legend>
-            <div className="grid grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] gap-3">
+            <div className="grid grid-cols-[3rem_minmax(0,1fr)_3rem] gap-3">
               <Button
                 type="button"
                 color="secondary"
@@ -189,7 +189,7 @@ function ProductDetail({ product }: { product: Product }) {
                 block
                 aria-label="Decrease quantity"
                 disabled={quantity <= 1}
-                className="min-h-14"
+                className="min-h-12"
                 onClick={() => setQuantity((current) => Math.max(1, current - 1))}
               >
                 <Minus aria-hidden="true" className="size-5" />
@@ -203,7 +203,7 @@ function ProductDetail({ product }: { product: Product }) {
                 value={quantity}
                 size="3xl"
                 pill
-                className="min-w-0 font-mono text-lg [--input-size:3.5rem] [&>input]:text-center"
+                className="min-w-0 font-mono text-base [--input-size:3rem] [&>input]:text-center"
                 onChange={(event) => {
                   const nextQuantity = Number(event.target.value)
                   setQuantity(
@@ -221,7 +221,7 @@ function ProductDetail({ product }: { product: Product }) {
                 block
                 aria-label="Increase quantity"
                 disabled={quantity >= 99}
-                className="min-h-14"
+                className="min-h-12"
                 onClick={() => setQuantity((current) => Math.min(99, current + 1))}
               >
                 <Plus aria-hidden="true" className="size-5" />
