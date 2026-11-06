@@ -12,6 +12,7 @@ import { useRef, useState, type CSSProperties } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { CatalogError, CatalogLoading } from '../components/CatalogStatus'
+import { ProductImageViewer } from '../components/ProductImageViewer'
 import { useGetProductQuery } from '../features/catalog/catalogApi'
 import { savePendingCartItem } from '../features/auth/pendingCart'
 import { useAddCartItemMutation } from '../features/shop/cartApi'
@@ -74,6 +75,7 @@ function ProductDetail({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0])
   const [quantity, setQuantity] = useState(1)
   const [activeImage, setActiveImage] = useState(0)
+  const [viewingImage, setViewingImage] = useState<number | null>(null)
   const [openSection, setOpenSection] = useState<'materials' | 'fit' | null>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
 
@@ -102,11 +104,19 @@ function ProductDetail({ product }: { product: Product }) {
                 key={treatment}
                 className="flex h-[min(100vw,65dvh)] min-w-0 snap-center items-center justify-center overflow-hidden lg:h-full"
               >
-                <Image
-                  src={product.imageUrl}
-                  alt={`${product.name.toLowerCase()} ${index + 1} of ${galleryTreatments.length}`}
-                  className={`h-full max-h-full w-full object-contain ${treatment}`}
-                />
+                <button
+                  type="button"
+                  aria-label={`Enlarge ${product.name} image ${index + 1}`}
+                  aria-haspopup="dialog"
+                  className="h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:-outline-offset-4"
+                  onClick={() => setViewingImage(index)}
+                >
+                  <Image
+                    src={product.imageUrl}
+                    alt={`${product.name.toLowerCase()} ${index + 1} of ${galleryTreatments.length}`}
+                    className={`h-full max-h-full w-full object-contain ${treatment}`}
+                  />
+                </button>
               </figure>
             ))}
           </div>
@@ -358,6 +368,13 @@ function ProductDetail({ product }: { product: Product }) {
             </div>
           </div>
         </section>
+        {viewingImage !== null && (
+          <ProductImageViewer
+            src={product.imageUrl}
+            alt={`${product.name.toLowerCase()} ${viewingImage + 1} of ${galleryTreatments.length}`}
+            onClose={() => setViewingImage(null)}
+          />
+        )}
       </main>
   )
 }
