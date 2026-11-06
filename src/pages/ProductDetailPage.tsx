@@ -178,26 +178,56 @@ function ProductDetail({ product }: { product: Product }) {
             </div>
           </fieldset>
 
-          <label className="mt-6 flex w-28 flex-col gap-2 font-sans text-sm">
-            Quantity
-            <Input
-              type="number"
-              min="1"
-              max="99"
-              step="1"
-              value={quantity}
-              size="lg"
-              className="font-mono"
-              onChange={(event) => {
-                const nextQuantity = Number(event.target.value)
-                setQuantity(
-                  Number.isFinite(nextQuantity)
-                    ? Math.min(99, Math.max(1, Math.floor(nextQuantity)))
-                    : 1,
-                )
-              }}
-            />
-          </label>
+          <fieldset className="mt-6 min-w-0">
+            <legend className="mb-3 font-mono text-xs uppercase text-secondary">Quantity</legend>
+            <div className="grid grid-cols-[3.5rem_minmax(0,1fr)_3.5rem] gap-3">
+              <Button
+                type="button"
+                color="secondary"
+                variant="outline"
+                size="3xl"
+                block
+                aria-label="Decrease quantity"
+                disabled={quantity <= 1}
+                className="min-h-14"
+                onClick={() => setQuantity((current) => Math.max(1, current - 1))}
+              >
+                <Minus aria-hidden="true" className="size-5" />
+              </Button>
+              <Input
+                aria-label="Quantity"
+                type="number"
+                min="1"
+                max="99"
+                step="1"
+                value={quantity}
+                size="3xl"
+                pill
+                className="min-w-0 font-mono text-lg [--input-size:3.5rem] [&>input]:text-center"
+                onChange={(event) => {
+                  const nextQuantity = Number(event.target.value)
+                  setQuantity(
+                    Number.isFinite(nextQuantity)
+                      ? Math.min(99, Math.max(1, Math.floor(nextQuantity)))
+                      : 1,
+                  )
+                }}
+              />
+              <Button
+                type="button"
+                color="secondary"
+                variant="outline"
+                size="3xl"
+                block
+                aria-label="Increase quantity"
+                disabled={quantity >= 99}
+                className="min-h-14"
+                onClick={() => setQuantity((current) => Math.min(99, current + 1))}
+              >
+                <Plus aria-hidden="true" className="size-5" />
+              </Button>
+            </div>
+          </fieldset>
 
           <Button
             type="button"
