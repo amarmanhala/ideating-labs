@@ -8,7 +8,7 @@ import {
   Minus,
   Plus,
 } from '@openai/apps-sdk-ui/components/Icon'
-import { SegmentedControl } from '@openai/apps-sdk-ui/components/SegmentedControl'
+import { Select } from '@openai/apps-sdk-ui/components/Select'
 import { useRef, useState, type CSSProperties } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
@@ -159,20 +159,18 @@ function ProductDetail({ product }: { product: Product }) {
           </p>
 
           <div className="mt-6 min-w-0 lg:mt-10">
-            <p className="mb-3 font-mono text-xs uppercase text-secondary">Select size</p>
-            <SegmentedControl
+            <label htmlFor="product-size" className="mb-3 block font-mono text-xs uppercase text-secondary">Select size</label>
+            <Select
+              id="product-size"
+              name="size"
               value={selectedSize}
-              onChange={setSelectedSize}
-              aria-label="Select product size"
-              size="lg"
-              className="max-w-full font-mono"
-            >
-              {product.sizes.map((size) => (
-                <SegmentedControl.Option key={size} value={size}>
-                  {size}
-                </SegmentedControl.Option>
-              ))}
-            </SegmentedControl>
+              onChange={(option) => setSelectedSize(option.value)}
+              options={product.sizes.map((size) => ({ value: size, label: size }))}
+              size="3xl"
+              block
+              triggerClassName="min-h-14 w-full font-mono text-lg"
+              optionClassName="min-h-11 font-mono text-base"
+            />
           </div>
 
           <label className="mt-6 flex w-28 flex-col gap-2 font-sans text-sm">
