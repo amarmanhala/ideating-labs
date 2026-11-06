@@ -190,6 +190,7 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
               Name
               <Input
                 name="name"
+                className="max-sm:[--input-size:3.5rem] max-sm:text-lg"
                 autoComplete="name"
                 size="lg"
                 pill
@@ -203,6 +204,7 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
             <Input
               type="email"
               name="email"
+              className="max-sm:[--input-size:3.5rem] max-sm:text-lg"
               autoComplete="email"
               size="lg"
               pill
@@ -215,6 +217,7 @@ export function AccountPage({ mode }: { mode: 'login' | 'signup' }) {
             <Input
               type="password"
               name="password"
+              className="max-sm:[--input-size:3.5rem] max-sm:text-lg"
               autoComplete={isSignUp ? 'new-password' : 'current-password'}
               minLength={8}
               size="lg"
